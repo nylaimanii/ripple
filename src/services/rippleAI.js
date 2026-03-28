@@ -1,4 +1,5 @@
 import Groq from "groq-sdk";
+import { k2GenerateChoices, k2Available } from './k2Service';
 
 const client = new Groq({
   apiKey: import.meta.env.VITE_GROQ_API_KEY,
@@ -170,23 +171,28 @@ Field guidance:
 
     if (!basicInfo) throw new Error("Call 1 (basicInfo) returned null");
 
-    // ── CALL 2: The 3 choices ────────────────────────────────
-    const choicesData = await callGroq(
-      `Return a JSON object with no markdown. The JSON must have one field: choices (array of 3 choice objects). Historical moment: ${basicInfo.historicalMoment}, Year: ${basicInfo.year}, Location: ${basicInfo.location}, Player role: ${basicInfo.playerRole?.name}, ${basicInfo.playerRole?.title}.
+    // ── CALL 2: The 3 choices — K2 Think V2 (primary) with Groq fallback ──
+    // K2's multi-step reasoning models the full historical consequence space.
+    // Groq (llama-3.3-70b) is the fallback if K2 key is not configured.
+    let choicesData = null;
 
-Each choice object must have:
-- choiceNumber: 1, 2, or 3
-- setupText: 2-3 sentences describing the exact situation right now, what just happened, and what hangs in the balance
-- unheardRoomCharacters: array of exactly 1 object with fields name, age, location, monologue (2-3 sentences from a specific person's perspective, personal and historically grounded)
-- options: array of exactly 3 objects (ids A, B, C), each with:
-  - id: "A", "B", or "C"
-  - text: full sentence 15-25 words explaining WHAT the action is and WHY it matters
-  - tooltip: one sentence — who benefits and who bears the cost
-  - consequences: object with humanCost (0-100), economicImpact (0-100), environmentalConsequence (0-100), longTermStability (0-100), humanCostCount (integer, number of people affected), tradeoffLabel (complete sentence explaining the core tradeoff)`,
-      2000,
-    );
+    if (k2Available()) {
+      choicesData = await k2GenerateChoices(basicInfo);
+      if (choicesData) {
+        console.warn('✓ K2 Think V2 powered this scenario');
+      } else {
+        console.warn('K2 returned null — falling back to Groq');
+      }
+    }
 
-    if (!choicesData?.choices) throw new Error("Call 2 (choices) returned null or missing choices");
+    if (!choicesData) {
+      choicesData = await callGroq(
+        `Return a JSON object with no markdown. The JSON must have one field: choices (array of 3 choice objects). Historical moment: ${basicInfo.historicalMoment}, Year: ${basicInfo.year}, Location: ${basicInfo.location}, Player role: ${basicInfo.playerRole?.name}, ${basicInfo.playerRole?.title}. Each choice object must have: - choiceNumber: 1, 2, or 3 - setupText: 2-3 sentences describing the exact situation right now, what just happened, and what hangs in the balance - unheardRoomCharacters: array of exactly 1 object with fields name, age, location, monologue (2-3 sentences from a specific person's perspective, personal and historically grounded) - options: array of exactly 3 objects (ids A, B, C), each with: - id: "A", "B", or "C" - text: full sentence 15-25 words explaining WHAT the action is and WHY it matters - tooltip: one sentence — who benefits and who bears the cost - consequences: object with humanCost (0-100), economicImpact (0-100), environmentalConsequence (0-100), longTermStability (0-100), humanCostCount (integer, number of people affected), tradeoffLabel (complete sentence explaining the core tradeoff)`,
+        2000,
+      );
+    }
+
+    if (!choicesData?.choices) throw new Error("Call 2 returned null or missing choices");
 
     return { ...basicInfo, choices: choicesData.choices };
 

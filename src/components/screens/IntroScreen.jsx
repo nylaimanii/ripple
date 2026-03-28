@@ -293,7 +293,7 @@ export default function IntroScreen() {
         animate={{ opacity: step >= 3 ? 0.3 : 0 }}
         transition={{ duration: 1 }}
       >
-        YHack Spring 2026 · Societal Impact
+        YHack Spring 2026 · Powered by K2 Think V2 · Societal Impact
       </motion.p>
     </motion.div>
   );

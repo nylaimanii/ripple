@@ -4,6 +4,7 @@ import styles from './LoadingScreen.module.css';
 
 const PHRASES = [
   'Consulting the historical record…',
+  'K2 Think V2 is reasoning through the consequences…',
   'Finding your role…',
   'Calculating the weight of your choices…',
   'Preparing the consequences…',
