@@ -203,18 +203,36 @@ Field guidance:
 }
 
 export const fetchHistoricalImage = async (searchTerm) => {
-  try {
-    const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(searchTerm)}&prop=pageimages&format=json&pithumbsize=400&origin=*`;
-    const response = await fetch(url);
-    const data = await response.json();
-    const pages = data.query.pages;
-    const page = Object.values(pages)[0];
-    return page?.thumbnail?.source || null;
-  } catch(e) {
-    // image fetch failed silently
-    return null;
+  if (!searchTerm) return null;
+
+  // Try multiple title variants to maximize Wikipedia hit rate
+  const variants = [
+    searchTerm,
+    // First name + last name only (removes titles like "President")
+    searchTerm.replace(/^(President|Secretary|General|Admiral|Prime Minister|Senator|Dr\.|Mr\.|Mrs\.)\s+/i, ''),
+    // Last name only
+    searchTerm.split(' ').slice(-1)[0],
+  ].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i); // dedupe
+
+  for (const term of variants) {
+    try {
+      const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(term)}&prop=pageimages&format=json&pithumbsize=400&origin=*`;
+      const response = await fetch(url);
+      const data = await response.json();
+      const pages = data?.query?.pages;
+      if (!pages) continue;
+      const page = Object.values(pages)[0];
+      if (page?.thumbnail?.source) {
+        return page.thumbnail.source;
+      }
+    } catch (e) {
+      // try next variant
+    }
   }
-}
+
+  // All variants failed — return null, RoleIntroScreen will show initials
+  return null;
+};
 
 // ── Affected regions — separate small call after all choices made ──
 export async function generateAffectedRegions(historicalMoment, playerChoices) {
