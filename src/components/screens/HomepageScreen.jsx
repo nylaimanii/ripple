@@ -124,6 +124,7 @@ export default function HomepageScreen() {
             <span className={styles.trustBadge}>✅&nbsp; Any moment in history</span>
             <span className={styles.trustBadge}>✅&nbsp; AI-powered consequences</span>
             <span className={styles.trustBadge}>✅&nbsp; Real historical data</span>
+            <span className={styles.trustBadge}>🌐&nbsp; Custom domain ready</span>
           </div>
         </motion.div>
 
@@ -292,6 +293,9 @@ export default function HomepageScreen() {
         </ul>
         <p className={styles.footerCopyright}>
           © 2026 RIPPLE. Built for YHack Spring 2026 at Yale University.
+        </p>
+        <p className={styles.footerCopyright} style={{ marginTop: '4px', opacity: 0.5 }}>
+          🌐 Custom domain ready · Deployed on Vercel · Built for GoDaddy Registry
         </p>
       </footer>
 

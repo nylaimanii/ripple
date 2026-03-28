@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
 import { useGame } from '../../context/GameContext';
 import GhostIcon from '../ui/GhostIcon';
+import { generateHistoricalVerdict } from '../../services/geminiService';
 import styles from './DecisionDNA.module.css';
 
 const NARRATION =
@@ -32,6 +33,8 @@ export default function DecisionDNA() {
 
   const dnaRef = useRef(null);
   const [profileStep, setProfileStep] = useState(0);
+  const [verdict, setVerdict] = useState(null);
+  const [verdictLoading, setVerdictLoading] = useState(false);
 
   const scenarioChoices = generatedScenario?.choices ?? [];
 
@@ -75,6 +78,22 @@ export default function DecisionDNA() {
     );
     return () => timers.forEach(clearTimeout);
   }, []);
+
+  useEffect(() => {
+    if (!generatedScenario || !playerChoices.length) return;
+    setVerdictLoading(true);
+    generateHistoricalVerdict({
+      historicalMoment: generatedScenario.historicalMoment ?? '',
+      playerChoices,
+      generatedScenario,
+      rippleScore: choiceConsequences.reduce((acc, c) => ({
+        humanCost: (acc.humanCost ?? 0) + (c.humanCost ?? 50),
+      }), {}),
+    }).then(v => {
+      setVerdict(v);
+      setVerdictLoading(false);
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // TODO: Replace with ElevenLabs
   useEffect(() => {
@@ -249,6 +268,51 @@ export default function DecisionDNA() {
           <p className={styles.narrationText}>"{NARRATION}"</p>
         </div>
       </motion.section>
+
+      {/* ── Historical Verdict ──────────────────────────────── */}
+      {(verdictLoading || verdict) && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: profileStep >= 4 ? 1 : 0, y: profileStep >= 4 ? 0 : 16 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          style={{
+            background: 'rgba(201,162,39,0.07)',
+            border: '1px solid rgba(201,162,39,0.3)',
+            borderRadius: '16px',
+            padding: '24px 28px',
+            margin: '24px 0',
+            maxWidth: '640px',
+            width: '100%',
+          }}
+        >
+          <p style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.65rem',
+            color: 'rgba(232,224,208,0.4)',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            marginBottom: '12px',
+          }}>
+            ⚖ Historical Verdict — Powered by Gemini
+          </p>
+          {verdictLoading ? (
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: 'rgba(232,224,208,0.45)', fontStyle: 'italic' }}>
+              Consulting the historical record…
+            </p>
+          ) : (
+            <p style={{
+              fontFamily: 'var(--font-display)',
+              fontStyle: 'italic',
+              fontSize: '1rem',
+              color: '#e8e0d0',
+              lineHeight: 1.75,
+              margin: 0,
+            }}>
+              {verdict?.verdict ?? verdict}
+            </p>
+          )}
+        </motion.div>
+      )}
 
       {/* ── Action Buttons ──────────────────────────────────── */}
       <motion.div

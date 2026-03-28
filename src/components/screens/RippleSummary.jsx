@@ -16,6 +16,13 @@ const WHO_PAYS_BARS = [
   { key: 'politicalEconomicElites',     color: '#1a6b8a' },
 ];
 
+const WHO_PAYS_LABELS = {
+  civilianConflictZones: 'Civilians in Conflict Zones',
+  lowIncomeCommunities: 'Low-Income Communities',
+  youngPeopleFutureGenerations: 'Future Generations',
+  politicalEconomicElites: 'Political & Economic Elites',
+};
+
 const GEN_STOPS = [
   { label: '1 Year',   key: 'year1'  },
   { label: '5 Years',  key: 'year5'  },
@@ -142,6 +149,16 @@ export default function RippleSummary() {
             const raw = generatedScenario?.whoPays?.[key] ?? 0;
             return (
               <div key={key} className={styles.whoPaysRow}>
+                <p style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.7rem',
+                  color: 'rgba(232,224,208,0.55)',
+                  margin: '0 0 5px 0',
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                }}>
+                  {WHO_PAYS_LABELS[key]}
+                </p>
                 <div className={styles.whoPaysTrack}>
                   <motion.div
                     className={styles.whoPaysBar}

@@ -149,6 +149,47 @@ export default function RoleIntroScreen() {
           )}
         </AnimatePresence>
 
+        {scenario?.whatActuallyHappened?.summary && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: showButton ? 1 : 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            style={{ width: '100%', maxWidth: '520px', marginTop: '16px' }}
+          >
+            <details
+              style={{
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(201,162,39,0.2)',
+                borderRadius: '12px',
+                padding: '14px 18px',
+              }}
+            >
+              <summary style={{
+                cursor: 'pointer',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.7rem',
+                color: 'rgba(232,224,208,0.45)',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                listStyle: 'none',
+                userSelect: 'none',
+              }}>
+                📚 Historical Context — What Really Happened
+              </summary>
+              <p style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: '0.875rem',
+                color: 'rgba(232,224,208,0.75)',
+                lineHeight: 1.75,
+                marginTop: '12px',
+                marginBottom: 0,
+              }}>
+                {scenario.whatActuallyHappened.summary}
+              </p>
+            </details>
+          </motion.div>
+        )}
+
       </div>
     </motion.div>
   );

@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase';
 import Groq from 'groq-sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /*
   SQL to run in Supabase SQL editor:
@@ -28,6 +29,31 @@ import Groq from 'groq-sdk';
     ON user_ripples FOR INSERT
     WITH CHECK (auth.uid() = user_id);
 */
+
+async function callGeminiInsights(summary) {
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  if (!apiKey || apiKey.includes('your_')) return null;
+  try {
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const prompt = `Analyze these historical simulation results and return a JSON object with exactly three string fields: "reveals" (2-3 sentences about what this person's decision patterns reveal about their values), "blindSpot" (1 sentence about what they consistently underestimate), "challenge" (1 sentence suggesting a specific historical scenario to try next, format: "Try [event] — [why it challenges them]").
+
+Results:
+${summary}
+
+Return ONLY the raw JSON object. No markdown. No explanation.`;
+    const result = await model.generateContent(prompt);
+    const text = result.response.text().trim();
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) return null;
+    const parsed = JSON.parse(jsonMatch[0]);
+    if (parsed.reveals && parsed.blindSpot && parsed.challenge) return parsed;
+    return null;
+  } catch (e) {
+    console.error('callGeminiInsights error:', e);
+    return null;
+  }
+}
 
 const groqClient = new Groq({
   apiKey: import.meta.env.VITE_GROQ_API_KEY,
@@ -72,6 +98,9 @@ export async function generateGrowthInsights(ripples) {
     const s = r.ripple_score ?? {};
     return `Play ${i + 1}: "${r.historical_moment}" — Human Cost: ${s.humanCost ?? 50}, Economic: ${s.economicImpact ?? 50}, Environmental: ${s.environmentalConsequence ?? 50}, Stability: ${s.longTermStability ?? 50}`;
   }).join('\n');
+
+  const geminiResult = await callGeminiInsights(summary);
+  if (geminiResult) return geminiResult;
 
   try {
     const response = await groqClient.chat.completions.create({

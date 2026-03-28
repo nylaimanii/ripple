@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Howl } from 'howler';
 import { useGame } from '../../context/GameContext';
 import { generateScenario, fetchHistoricalImage } from '../../services/rippleAI';
 import styles from './IntroScreen.module.css';
@@ -21,7 +22,7 @@ export default function IntroScreen() {
   const {
     historicalInput, setHistoricalInput,
     setScenario, setLoading, setScreen, setError, setCharacterImage,
-    isLoading, error,
+    isLoading, error, isMuted,
   } = useGame();
 
   const suggestions = useMemo(() => {
@@ -32,6 +33,7 @@ export default function IntroScreen() {
   const canvasRef  = useRef(null);
   const rafRef     = useRef(null);
   const ripplesRef = useRef([]);
+  const soundRef   = useRef(null);
 
   // 0 = logo animating · 1 = tagline · 2 = subtitle · 3 = input + button
   const [step, setStep] = useState(0);
@@ -101,6 +103,23 @@ export default function IntroScreen() {
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
+
+  // ─── Ambient audio ───────────────────────────────────────────
+  useEffect(() => {
+    if (isMuted) return;
+    soundRef.current = new Howl({
+      src: ['https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'],
+      loop: true,
+      volume: 0.1,
+      html5: true,
+      onloaderror: () => { soundRef.current = null; },
+    });
+    soundRef.current.play();
+    return () => {
+      soundRef.current?.unload();
+      soundRef.current = null;
+    };
+  }, [isMuted]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ─── Submit handler ──────────────────────────────────────────
   async function handleEnterHistory() {
