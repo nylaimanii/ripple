@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useGame } from '../../context/GameContext';
 import TypewriterText from '../ui/TypewriterText';
@@ -7,39 +6,8 @@ import styles from './UnheardRoom.module.css';
 export default function UnheardRoom({ characters, choiceNumber, onClose }) {
   const { visitUnheardRoom } = useGame();
 
-  // ─── Web Speech API: queue all monologues in sequence ────
-  useEffect(() => {
-    if (!window.speechSynthesis || characters.length === 0) return;
-
-    function enqueue(voices) {
-      characters.forEach(char => {
-        // TODO: Replace with ElevenLabs API call
-        const utt = new SpeechSynthesisUtterance(char.monologue);
-        utt.rate  = 0.85;
-        utt.pitch = 0.9;
-        const voice = voices.find(v =>
-          /daniel|david|james|george|arthur|male|alex|fred/i.test(v.name)
-        );
-        if (voice) utt.voice = voice;
-        window.speechSynthesis.speak(utt);
-      });
-    }
-
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length > 0) {
-      enqueue(voices);
-    } else {
-      window.speechSynthesis.addEventListener('voiceschanged', () => {
-        enqueue(window.speechSynthesis.getVoices());
-      }, { once: true });
-    }
-
-    return () => { window.speechSynthesis.cancel(); };
-  }, [characters]);
-
   // ─── Close: mark this choice as heard ────────────────────
   function handleClose() {
-    window.speechSynthesis?.cancel();
     visitUnheardRoom(choiceNumber);
     onClose();
   }
