@@ -27,7 +27,10 @@ export default function RoleIntroScreen() {
   const { generatedScenario, setScreen, characterImage, isMuted } = useGame();
 
   const [showButton, setShowButton] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const typewriterDoneRef = useRef(false);
+
+  useEffect(() => { setImgError(false); }, [characterImage]);
 
   const scenario   = generatedScenario ?? {};
   const role       = scenario.playerRole   ?? {};
@@ -112,7 +115,7 @@ export default function RoleIntroScreen() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.35, type: 'spring', stiffness: 120, damping: 20 }}
         >
-          {characterImage ? (
+          {characterImage && !imgError ? (
             <img
               src={characterImage}
               alt={role.name}
@@ -125,42 +128,41 @@ export default function RoleIntroScreen() {
                 display: 'block',
                 margin: '0 auto 16px auto',
               }}
-              onError={e => {
-                // If image fails to load, swap to initials
-                e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'flex';
-              }}
+              onError={() => setImgError(true)}
             />
-          ) : null}
-          <div
-            style={{
-              display: characterImage ? 'none' : 'flex',
-              width: '120px',
-              height: '120px',
-              borderRadius: '50%',
-              border: '3px solid #c9a227',
-              background: 'linear-gradient(135deg, #1a2a3a 0%, #0a0a1a 100%)',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 16px auto',
-              flexShrink: 0,
-            }}
-          >
-            <span style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '2rem',
-              color: '#c9a227',
-              fontWeight: 700,
-              letterSpacing: '0.05em',
-            }}>
-              {(role.name ?? '?')
-                .split(' ')
-                .filter(w => w.length > 0)
-                .slice(0, 2)
-                .map(w => w[0].toUpperCase())
-                .join('')}
-            </span>
-          </div>
+          ) : (
+            <div
+              style={{
+                display: 'flex',
+                width: '120px',
+                height: '120px',
+                borderRadius: '50%',
+                border: '3px solid #c9a227',
+                background: 'linear-gradient(135deg, #1a2a3a 0%, #0a0a1a 100%)',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 16px auto',
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '2rem',
+                  color: '#c9a227',
+                  fontWeight: 700,
+                  letterSpacing: '0.05em',
+                }}
+              >
+                {(role.name ?? '?')
+                  .split(' ')
+                  .filter(w => w.length > 0)
+                  .slice(0, 2)
+                  .map(w => w[0].toUpperCase())
+                  .join('')}
+              </span>
+            </div>
+          )}
           <p className={styles.portraitName}>{role.name ?? ''}</p>
           <p className={styles.portraitTitle}>{role.title ?? ''}</p>
           <p className={styles.portraitDesc}>{role.portraitDescription ?? ''}</p>
