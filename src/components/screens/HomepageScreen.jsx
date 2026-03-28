@@ -27,28 +27,11 @@ const FEATURES = [
   },
 ];
 
-const LOCKED_FEATURES = [
-  {
-    icon: '🔒',
-    title: 'Your Ripple Journal',
-    desc: 'See every scenario you\'ve played and how your choices compare to what history chose.',
-  },
-  {
-    icon: '🔒',
-    title: 'Good vs. Bad Impact Score',
-    desc: 'Track whether your decisions across history have done more good or harm. Honest. Unfiltered.',
-  },
-  {
-    icon: '🔒',
-    title: 'Personal Growth Insights',
-    desc: 'AI analyzes your Decision DNA across all your ripples and gives you specific, actionable suggestions for how you make decisions in real life.',
-  },
-];
-
 const POWERED_BY = [
-  { name: 'Groq', desc: 'Lightning-fast AI inference for real-time scenario generation and narrative.' },
+  { name: 'Groq', desc: 'Lightning-fast AI inference powering real-time scenario generation.' },
   { name: 'Mapbox', desc: 'Interactive globe visualization bringing the consequence map to life.' },
-  { name: 'Supabase', desc: 'Secure authentication, data persistence, and community features.' },
+  { name: 'ElevenLabs', desc: 'AI voice narration bringing every historical moment to life.' },
+  { name: 'K2 Think V2', desc: 'Advanced reasoning engine modeling historical consequence chains.' },
 ];
 
 const STEPS = [
@@ -103,7 +86,6 @@ export default function HomepageScreen() {
         </ul>
         <div className={styles.navActions}>
           <Link to="/demo" className={styles.btnSolid}>Try Demo</Link>
-          <Link to="/signin" className={styles.btnOutline}>Sign In</Link>
         </div>
       </nav>
 
@@ -118,7 +100,6 @@ export default function HomepageScreen() {
           </p>
           <div className={styles.heroCtas}>
             <Link to="/demo" className={styles.btnSolid}>Try Demo →</Link>
-            <Link to="/signin" className={styles.btnOutline}>Sign In</Link>
           </div>
           <div className={styles.trustBadges}>
             <span className={styles.trustBadge}>✅&nbsp; Any moment in history</span>
@@ -215,45 +196,6 @@ export default function HomepageScreen() {
         </div>
       </section>
 
-      {/* ── Journal Preview (Signed-In Features) ──────────── */}
-      <section className={styles.journalPreviewSection}>
-        <div className={styles.journalPreviewInner}>
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className={styles.sectionLabel}>For signed-in players</p>
-            <h2 className={styles.sectionHeading}>Your Ripples. Your Legacy.</h2>
-            <p className={styles.sectionSub}>
-              Sign in to unlock your personal Ripple Journal — a living record of every historical moment you've stepped into and what it reveals about how you make decisions.
-            </p>
-          </motion.div>
-          <div className={styles.lockedGrid}>
-            {LOCKED_FEATURES.map((f, i) => (
-              <motion.div
-                key={f.title}
-                className={styles.lockedCard}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
-                <span className={styles.lockIcon}>{f.icon}</span>
-                <h3 className={styles.lockedTitle}>{f.title}</h3>
-                <p className={styles.lockedDesc}>{f.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <Link to="/signin" className={styles.btnSolid} style={{ padding: '14px 36px', fontSize: '1rem' }}>
-              Sign In to Unlock →
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* ── Powered By ────────────────────────────────────── */}
       <section className={styles.poweredBy}>
         <p className={styles.sectionLabel}>Powered by</p>
@@ -275,7 +217,6 @@ export default function HomepageScreen() {
         </h2>
         <div className={styles.ctaButtons}>
           <Link to="/demo" className={styles.btnSolid}>Try Demo →</Link>
-          <Link to="/signin" className={styles.btnOutline}>Sign In</Link>
         </div>
         <p className={styles.ctaFine}>No account required for demo &nbsp;•&nbsp; Free forever &nbsp;•&nbsp; Your choices matter</p>
       </section>

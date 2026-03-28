@@ -13,16 +13,12 @@ import DecisionDNA       from './components/screens/DecisionDNA';
 import RegretArchive     from './components/screens/RegretArchive';
 import ButterflyEffect   from './components/screens/ButterflyEffect';
 import HomepageScreen    from './components/screens/HomepageScreen';
-import SignInScreen      from './components/screens/SignInScreen';
-import JournalScreen     from './components/screens/JournalScreen';
 
 // Scenes (sequential mid-game screens)
 import ChoiceMoment      from './components/scenes/ChoiceMoment';
 import HumanCostCounter  from './components/scenes/HumanCostCounter';
 import ConsequenceMap    from './components/scenes/ConsequenceMap';
 import RippleScoreUpdate from './components/scenes/RippleScoreUpdate';
-
-import { saveRipple } from './services/journalService';
 
 import './styles/global.css';
 
@@ -40,20 +36,6 @@ const SCREENS = {
   dna:            <DecisionDNA />,
   archive:        <RegretArchive />,
 };
-
-// ── Saves ripple to Supabase when scenario completes ──────
-function RippleSaver() {
-  const { scenarioComplete, generatedScenario, playerChoices, rippleScore, humanCostTotal } = useGame();
-  const savedRef = useRef(false);
-
-  useEffect(() => {
-    if (!scenarioComplete || savedRef.current) return;
-    savedRef.current = true;
-    saveRipple({ generatedScenario, playerChoices, rippleScore, humanCostTotal });
-  }, [scenarioComplete]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  return null;
-}
 
 // ── Inner app (needs access to useGame) ───────────────────
 function AppInner() {
@@ -86,9 +68,6 @@ function AppInner() {
 
       {/* Active screen — each manages its own enter animation */}
       {screen}
-
-      {/* Save ripple to journal on completion */}
-      <RippleSaver />
     </div>
   );
 }
@@ -109,8 +88,6 @@ export default function App() {
       <Routes>
         <Route path="/"        element={<HomepageScreen />} />
         <Route path="/demo"    element={<DemoRoute />} />
-        <Route path="/signin"  element={<SignInScreen />} />
-        <Route path="/journal" element={<JournalScreen />} />
       </Routes>
     </BrowserRouter>
   );

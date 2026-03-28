@@ -60,24 +60,9 @@ const groqClient = new Groq({
   dangerouslyAllowBrowser: true,
 });
 
-export async function saveRipple({ generatedScenario, playerChoices, rippleScore, humanCostTotal }) {
-  if (!supabase) return;
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session?.user) return;
-
-  const { error } = await supabase.from('user_ripples').insert([{
-    user_id:            session.user.id,
-    historical_moment:  generatedScenario?.historicalMoment ?? '',
-    year:               generatedScenario?.year ?? '',
-    location:           generatedScenario?.location ?? '',
-    player_role:        generatedScenario?.playerRole ?? null,
-    player_choices:     playerChoices ?? [],
-    ripple_score:       rippleScore ?? {},
-    human_cost_total:   humanCostTotal ?? 0,
-    origin_coordinates: generatedScenario?.originCoordinates ?? null,
-  }]);
-
-  if (error) console.error('saveRipple error:', error);
+export async function saveRipple({ generatedScenario, playerChoices, rippleScore, humanCostTotal }) { // eslint-disable-line no-unused-vars
+  // Auth removed — ripples are not persisted in this version
+  return;
 }
 
 export async function fetchUserRipples() {
