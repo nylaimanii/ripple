@@ -207,7 +207,7 @@ export default function RippleSummary() {
       <div className={styles.cta}>
         <motion.button
           className={styles.nextBtn}
-          onClick={() => setScreen('dna')}
+          onClick={() => setScreen('butterfly')}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
         >

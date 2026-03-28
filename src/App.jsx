@@ -11,6 +11,7 @@ import RoleIntroScreen   from './components/screens/RoleIntroScreen';
 import RippleSummary     from './components/screens/RippleSummary';
 import DecisionDNA       from './components/screens/DecisionDNA';
 import RegretArchive     from './components/screens/RegretArchive';
+import ButterflyEffect   from './components/screens/ButterflyEffect';
 import HomepageScreen    from './components/screens/HomepageScreen';
 import SignInScreen      from './components/screens/SignInScreen';
 import JournalScreen     from './components/screens/JournalScreen';
@@ -35,6 +36,7 @@ const SCREENS = {
   consequenceMap: <ConsequenceMap />,
   rippleScore:    <RippleScoreUpdate />,
   summary:        <RippleSummary />,
+  butterfly:      <ButterflyEffect />,
   dna:            <DecisionDNA />,
   archive:        <RegretArchive />,
 };
