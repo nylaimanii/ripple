@@ -1,0 +1,301 @@
+/* ── Gold design token ────────────────────────────────── */
+:root {
+  --color-gold:        #C9A84C;
+  --color-gold-dim:    rgba(201,168,76,0.35);
+  --color-gold-border: rgba(201,168,76,0.55);
+}
+
+/* ── Root — dark scrollable, mobile-first 390px ───────── */
+.root {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-8) var(--space-3) var(--space-10);
+  max-width: 390px;
+  margin: 0 auto;
+  width: 100%;
+  overflow-y: auto;
+  background: var(--color-bg, #0a0a12);
+}
+
+/* ── Header ───────────────────────────────────────────── */
+.header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-top: var(--space-4);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 2.6rem);
+  color: var(--color-gold);
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.subtitle {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-style: italic;
+  color: rgba(232,224,208,0.45);
+  margin: 0;
+}
+
+/* ── Section ──────────────────────────────────────────── */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sectionTitle {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: rgba(232,224,208,0.65);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-1);
+  margin: 0;
+}
+
+/* ── Choice list ──────────────────────────────────────── */
+.choicesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.choiceItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.choiceHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.choiceNum {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid var(--color-gold-border);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.setupText {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(232,224,208,0.38);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.selectedCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(201,168,76,0.06);
+  border: 1px solid var(--color-gold-border);
+  border-radius: var(--radius-md);
+}
+
+.optionId {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-gold);
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.optionText {
+  font-size: 0.88rem;
+  color: rgba(232,224,208,0.88);
+  line-height: 1.5;
+}
+
+.noChoice {
+  font-size: 0.82rem;
+  color: rgba(232,224,208,0.3);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ── Radar wrapper ────────────────────────────────────── */
+.radarWrapper {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) 0;
+}
+
+/* ── Who Bears the Cost? bars ─────────────────────────── */
+.whoPaysBars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: var(--space-3) var(--space-2);
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.whoPaysRow {
+  display: flex;
+  align-items: center;
+}
+
+.whoPaysTrack {
+  flex: 1;
+  height: 10px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.whoPaysBar {
+  height: 100%;
+  border-radius: 5px;
+}
+
+/* ── Generational slider ──────────────────────────────── */
+.sliderWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(201,168,76,0.5);
+}
+
+.sliderLabels {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sliderLabel {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: rgba(232,224,208,0.3);
+  transition: color 0.2s;
+}
+
+.sliderLabelActive {
+  color: var(--color-gold);
+}
+
+.genText {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: rgba(232,224,208,0.78);
+  padding: var(--space-3);
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin: 0;
+  min-height: 72px;
+}
+
+/* ── What Actually Happened ───────────────────────────── */
+.historyBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.historySummary {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: rgba(232,224,208,0.88);
+  margin: 0;
+}
+
+.highestCost {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(196,58,58,0.9);
+  font-style: italic;
+  margin: 0;
+}
+
+.quote {
+  margin: 0;
+  padding: 12px 16px;
+  border-left: 3px solid var(--color-gold);
+  background: rgba(201,168,76,0.05);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-style: italic;
+  line-height: 1.65;
+  color: rgba(232,224,208,0.75);
+}
+
+/* ── CTA ──────────────────────────────────────────────── */
+.cta {
+  display: flex;
+  justify-content: center;
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+  padding-top: var(--space-2);
+}
+
+.nextBtn {
+  padding: 15px 32px;
+  background: transparent;
+  border: 1px solid var(--color-gold-border);
+  border-radius: var(--radius-xl);
+  color: var(--color-gold);
+  font-size: 1rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 16px rgba(201,168,76,0.15);
+}
+
+.nextBtn:hover {
+  background: rgba(201,168,76,0.08);
+  box-shadow: 0 0 28px rgba(201,168,76,0.3);
+}
+
+/* ── Wider screens ────────────────────────────────────── */
+@media (min-width: 480px) {
+  .root {
+    max-width: 520px;
+    padding-left: var(--space-5);
+    padding-right: var(--space-5);
+  }
+}

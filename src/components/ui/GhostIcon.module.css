@@ -1,0 +1,11 @@
+.wrapper {
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
+}
+.ghost {
+  font-size: 0.9rem;
+  display: inline-block;
+  filter: grayscale(0.4) opacity(0.7);
+  cursor: default;
+}

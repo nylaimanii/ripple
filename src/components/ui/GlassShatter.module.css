@@ -1,0 +1,26 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-crack);
+  pointer-events: none;
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+}
+
+.crackSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.shard {
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg);
+  will-change: transform;
+}

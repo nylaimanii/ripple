@@ -1,0 +1,109 @@
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: 14px var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border: none;
+  transition: background var(--t-fast), opacity var(--t-fast), box-shadow var(--t-fast);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Variants ─────────────────────────────────────────────────── */
+.primary {
+  background: var(--color-accent-blue);
+  color: var(--color-text);
+  box-shadow: 0 0 16px rgba(26, 107, 138, 0.35);
+}
+.primary:hover:not(:disabled) {
+  box-shadow: 0 0 28px rgba(26, 107, 138, 0.65);
+}
+
+.ghost {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+.ghost:hover:not(:disabled) {
+  border-color: var(--color-accent-blue);
+  color: var(--color-blue-bright);
+}
+
+.danger {
+  background: var(--color-accent-red);
+  color: var(--color-text);
+}
+
+/* Choice card — handwritten-style feel */
+.choice {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: var(--space-3) var(--space-3);
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  position: relative;
+  overflow: visible;
+  cursor: pointer;
+}
+.choice::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  transition: border-color var(--t-normal), box-shadow var(--t-normal);
+}
+.choice:hover::before {
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 20px rgba(26, 107, 138, 0.25);
+}
+.choice:hover .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ── Tooltip ──────────────────────────────────────────────────── */
+.tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: #1e1e2e;
+  border: 1px solid var(--color-border);
+  color: var(--color-accent-blue);
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-normal), transform var(--t-normal);
+  z-index: var(--z-overlay);
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
+
+@media (max-width: 480px) {
+  .choice { font-size: 0.92rem; padding: var(--space-2); }
+  .tooltip { display: none; }
+}

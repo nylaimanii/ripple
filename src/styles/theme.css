@@ -1,0 +1,51 @@
+:root {
+  /* ─── Core palette ─────────────────────────────────── */
+  --color-bg:            #0a0a0f;
+  --color-text:          #e8e0d0;
+  --color-accent-blue:   #1a6b8a;
+  --color-accent-red:    #8a1a1a;
+  --color-accent-green:  #1a6b3a;
+  --color-accent-yellow: #8a7a1a;
+  --color-card-bg:       #12121a;
+  --color-border:        #2a2a3a;
+
+  /* Brighter variants for glow / active states */
+  --color-blue-bright:   #2a9bc4;
+  --color-red-bright:    #c43a3a;
+  --color-green-bright:  #2ac45a;
+  --color-yellow-bright: #c4b02a;
+
+  /* ─── Typography ────────────────────────────────────── */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+
+  /* ─── Spacing (8 px base grid) ──────────────────────── */
+  --space-1:  8px;
+  --space-2:  16px;
+  --space-3:  24px;
+  --space-4:  32px;
+  --space-5:  40px;
+  --space-6:  48px;
+  --space-8:  64px;
+  --space-10: 80px;
+  --space-12: 96px;
+
+  /* ─── Radii ─────────────────────────────────────────── */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* ─── Transitions ───────────────────────────────────── */
+  --t-fast:   0.15s ease;
+  --t-normal: 0.3s  ease;
+  --t-slow:   0.6s  ease;
+
+  /* ─── Z-index ladder ────────────────────────────────── */
+  --z-base:   1;
+  --z-overlay: 100;
+  --z-modal:   200;
+  --z-crack:   250;
+  --z-mute:    300;
+}

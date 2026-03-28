@@ -1,0 +1,198 @@
+/* ── Root ─────────────────────────────────────────────────── */
+.root {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0f;
+  overflow: hidden;
+}
+
+/* ── Canvas ───────────────────────────────────────────────── */
+.canvas {
+  position: absolute;
+  inset: 0;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ── Content ──────────────────────────────────────────────── */
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 640px;
+}
+
+/* ── Logo ─────────────────────────────────────────────────── */
+.logoRow {
+  display: flex;
+  gap: 0.04em;
+  line-height: 1;
+}
+
+.logoLetter {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 18vw, 9rem);
+  font-weight: 900;
+  color: #e8e0d0;
+  letter-spacing: 0.01em;
+  text-shadow:
+    0 0 60px rgba(26, 107, 138, 0.5),
+    0 0 120px rgba(26, 107, 138, 0.2);
+  display: inline-block;
+}
+
+/* ── Tagline ──────────────────────────────────────────────── */
+.tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
+  color: #9a9090;
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+
+/* ── Subtitle ─────────────────────────────────────────────── */
+.subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(0.82rem, 2.5vw, 1rem);
+  color: #9a9090;
+  letter-spacing: 0.04em;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── Input section ────────────────────────────────────────── */
+.inputSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.historyInput {
+  width: 100%;
+  padding: 16px 20px;
+  background: #1a1a24;
+  border: 1.5px solid #2a2a3a;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+  color: #e8e0d0;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
+}
+
+.historyInput::placeholder {
+  color: #4a4a5a;
+  font-style: italic;
+}
+
+.historyInput:focus {
+  border-color: #1a6b8a;
+  box-shadow: 0 0 0 3px rgba(26, 107, 138, 0.15);
+}
+
+.historyInput:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Enter button ─────────────────────────────────────────── */
+.enterBtn {
+  padding: 15px 44px;
+  background: transparent;
+  border: 2px solid #c9a227;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+  font-style: italic;
+  letter-spacing: 0.06em;
+  color: #c9a227;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.enterBtn:not(:disabled):hover {
+  background: rgba(201, 162, 39, 0.1);
+  box-shadow:
+    0 0 18px rgba(201, 162, 39, 0.4),
+    0 0 40px rgba(201, 162, 39, 0.15);
+  color: #e8c44a;
+  border-color: #e8c44a;
+}
+
+.enterBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-color: #5a5030;
+  color: #5a5030;
+}
+
+/* ── Error message ────────────────────────────────────────── */
+.errorMsg {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: #c44a4a;
+  background: rgba(139, 30, 30, 0.15);
+  border: 1px solid rgba(196, 74, 74, 0.3);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  line-height: 1.5;
+}
+
+/* ── Credit ───────────────────────────────────────────────── */
+.credit {
+  position: absolute;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: #e8e0d0;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ── Mobile (390px) ───────────────────────────────────────── */
+@media (max-width: 430px) {
+  .content {
+    gap: 18px;
+    padding: 24px 20px;
+  }
+
+  .historyInput {
+    padding: 14px 16px;
+    font-size: 0.875rem;
+  }
+
+  .enterBtn {
+    padding: 14px 36px;
+    width: 100%;
+  }
+
+  .errorMsg {
+    font-size: 0.8rem;
+  }
+}

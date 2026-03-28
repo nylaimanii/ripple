@@ -1,0 +1,209 @@
+/* ── Root ─────────────────────────────────────────────────── */
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Backdrop ─────────────────────────────────────────────── */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 5, 10, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* ── Card ─────────────────────────────────────────────────── */
+.card {
+  position: relative;
+  z-index: 2;
+  width: min(85vw, 480px);
+  max-height: 92dvh;
+  background: #1a1a24;
+  border: 1.5px solid #c9a227;
+  border-radius: 16px;
+  padding: 28px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  overflow-y: auto;
+  box-shadow:
+    0 0 40px rgba(201, 162, 39, 0.1),
+    0 24px 64px rgba(0, 0, 0, 0.6);
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a3a transparent;
+}
+
+.card::-webkit-scrollbar { width: 4px; }
+.card::-webkit-scrollbar-track { background: transparent; }
+.card::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 2px; }
+
+/* ── Title row ────────────────────────────────────────────── */
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 4vw, 1.5rem);
+  font-weight: 700;
+  color: #e8e0d0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wave {
+  color: #c9a227;
+  font-style: normal;
+  font-size: 1.4em;
+  line-height: 1;
+  text-shadow: 0 0 12px rgba(201, 162, 39, 0.5);
+}
+
+/* ── Bars ─────────────────────────────────────────────────── */
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.barRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.barIcon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+}
+
+.barInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.barLabelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+  gap: 8px;
+}
+
+.barLabel {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(232, 224, 208, 0.55);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.barValue {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.barTrack {
+  width: 100%;
+  height: 7px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 4px;
+  box-shadow: 0 0 6px currentColor;
+}
+
+/* Danger pulse — fires when value > 70 */
+.barDanger {
+  animation: dangerPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes dangerPulse {
+  0%, 100% { box-shadow: 0 0 6px currentColor;                      opacity: 1; }
+  50%       { box-shadow: 0 0 18px rgba(196, 74, 74, 0.9);          opacity: 0.85; }
+}
+
+/* ── Tradeoff label ───────────────────────────────────────── */
+.tradeoff {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+  color: #c8c0b0;
+  line-height: 1.7;
+  margin: 0;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  text-align: center;
+}
+
+/* ── Ghost warning ────────────────────────────────────────── */
+.ghostWarning {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.8rem;
+  color: #c44a4a;
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+/* ── Continue button ──────────────────────────────────────── */
+.continueBtn {
+  width: 100%;
+  padding: 14px 32px;
+  background: transparent;
+  border: 2px solid #c9a227;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  letter-spacing: 0.05em;
+  color: #c9a227;
+  cursor: pointer;
+  margin-top: auto;
+  transition: background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+
+.continueBtn:hover {
+  background: rgba(201, 162, 39, 0.1);
+  box-shadow:
+    0 0 16px rgba(201, 162, 39, 0.4),
+    0 0 36px rgba(201, 162, 39, 0.12);
+  color: #e8c44a;
+  border-color: #e8c44a;
+}
+
+/* ── Mobile (390px) ───────────────────────────────────────── */
+@media (max-width: 430px) {
+  .card {
+    width: 92vw;
+    padding: 22px 20px 20px;
+    gap: 18px;
+    border-radius: 14px;
+  }
+
+  .barRow {
+    gap: 10px;
+  }
+
+  .barLabel {
+    font-size: 0.68rem;
+  }
+}

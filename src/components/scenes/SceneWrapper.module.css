@@ -1,0 +1,256 @@
+.scene {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+/* ── Background layers ─────────────────────────────────────── */
+.bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.bgLayer1 {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 80%, rgba(26,107,138,0.06) 0%, transparent 70%);
+}
+.bgLayer2 {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.9) 100%);
+}
+.bgLayer3 {
+  position: absolute;
+  inset: 0;
+}
+
+/* Scene 1 — Silicon Valley tech office at night */
+.bg1 .bgLayer3 {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 39px,
+      rgba(26, 107, 138, 0.04) 39px,
+      rgba(26, 107, 138, 0.04) 40px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba(26, 107, 138, 0.04) 39px,
+      rgba(26, 107, 138, 0.04) 40px
+    );
+}
+
+/* Scene 2 — Situation Room */
+.bg2 .bgLayer1 {
+  background: radial-gradient(ellipse at 50% 30%, rgba(138,26,26,0.05) 0%, transparent 60%);
+}
+.bg2 .bgLayer3 {
+  background: linear-gradient(180deg,
+    rgba(12, 10, 8, 0.0) 0%,
+    rgba(18, 14, 10, 0.4) 100%
+  );
+}
+
+/* City lights for scene 1 */
+.cityLights {
+  position: absolute;
+  inset: 0;
+}
+.lightDot {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 240, 180, 0.9);
+  animation: flicker ease-in-out infinite;
+}
+@keyframes flicker {
+  0%, 100% { opacity: 0.3; } 50% { opacity: 0.9; }
+}
+
+/* ── Content panels ─────────────────────────────────────────── */
+.introPanel,
+.setupPanel {
+  position: relative;
+  z-index: var(--z-base);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-3);
+  max-width: 640px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  justify-content: center;
+  padding-top: 80px;
+  padding-bottom: var(--space-6);
+}
+
+/* ── Portrait placeholder ──────────────────────────────────── */
+.portrait {
+  width: 88px;
+  height: 88px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-border);
+  flex-shrink: 0;
+  margin-bottom: var(--space-1);
+  position: relative;
+  overflow: hidden;
+}
+.portraitInitials {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: rgba(232,224,208,0.6);
+}
+.portraitName {
+  font-size: 0.55rem;
+  font-family: var(--font-mono);
+  color: rgba(232,224,208,0.4);
+  letter-spacing: 0.05em;
+  position: absolute;
+  bottom: 6px;
+}
+.portraitRole {
+  display: none;
+}
+
+/* ── Narrator text ─────────────────────────────────────────── */
+.sceneLabel {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-accent-blue);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.sceneTitle {
+  font-size: 2rem;
+  font-family: var(--font-display);
+  margin-top: var(--space-1);
+}
+.sceneSubtitle {
+  font-size: 0.85rem;
+  color: rgba(232,224,208,0.5);
+  font-style: italic;
+  font-family: var(--font-display);
+  margin-top: -var(--space-1);
+}
+.narratorBox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.narratorText {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--color-text);
+  opacity: 0.9;
+}
+.audioRow { margin-top: var(--space-1); }
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.continueBtn,
+.proceedBtn {
+  align-self: flex-start;
+  padding: 12px var(--space-3);
+  background: var(--color-accent-blue);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  margin-top: var(--space-2);
+  font-family: var(--font-body);
+  transition: box-shadow var(--t-fast);
+}
+.continueBtn:hover,
+.proceedBtn:hover {
+  box-shadow: 0 0 20px rgba(26,107,138,0.5);
+}
+
+/* ── Unheard Room door ─────────────────────────────────────── */
+.unheardDoor {
+  align-self: flex-start;
+  padding: 10px 18px;
+  background: rgba(26,107,138,0.08);
+  border: 1px solid rgba(26,107,138,0.35);
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  font-family: var(--font-body);
+  color: var(--color-blue-bright);
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background var(--t-fast);
+}
+.unheardDoor:hover { background: rgba(26,107,138,0.16); }
+
+/* ── Choice header ─────────────────────────────────────────── */
+.choiceHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.choiceNum {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-accent-yellow);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.choiceName {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+}
+.setupText {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgba(232,224,208,0.88);
+}
+
+/* ── Flash overlay ─────────────────────────────────────────── */
+.flashOverlay {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  z-index: var(--z-overlay);
+  pointer-events: none;
+}
+
+/* ── Progress dots ─────────────────────────────────────────── */
+.progressDots {
+  position: fixed;
+  bottom: var(--space-3);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-1);
+  z-index: var(--z-overlay);
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-border);
+  transition: background var(--t-normal), transform var(--t-normal);
+}
+.dot.done   { background: var(--color-accent-blue); }
+.dot.active { background: var(--color-text); transform: scale(1.4); }
+
+@media (max-width: 480px) {
+  .introPanel,
+  .setupPanel { padding: 72px var(--space-2) var(--space-6); }
+  .sceneTitle { font-size: 1.5rem; }
+  .narratorText { font-size: 0.95rem; }
+}

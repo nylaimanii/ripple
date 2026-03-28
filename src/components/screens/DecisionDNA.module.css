@@ -1,0 +1,279 @@
+/* ── Root ─────────────────────────────────────────────── */
+.root {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-8) var(--space-3) var(--space-10);
+  max-width: 390px;
+  margin: 0 auto;
+  width: 100%;
+  background: #0a0a0f;
+  overflow-y: auto;
+}
+
+/* ── Header ───────────────────────────────────────────── */
+.header {
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 8vw, 2.6rem);
+  color: #C9A84C;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+/* ── Helix ────────────────────────────────────────────── */
+.helixScene {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* perspective applied here so children get 3D depth */
+  perspective: 320px;
+}
+
+@keyframes helixSpin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+
+.helixContainer {
+  position: relative;
+  width: 120px;
+  height: 320px;
+  animation: helixSpin 9s linear infinite;
+  transform-style: preserve-3d;
+}
+
+.helixDot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.helixRung {
+  position: absolute;
+  height: 1px;
+  background: rgba(201, 162, 39, 0.5);
+}
+
+/* ── Profile Labels ───────────────────────────────────── */
+.profiles {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.profileRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-lg);
+}
+
+.profileLabel {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: rgba(232, 224, 208, 0.38);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.profileValue {
+  font-size: 0.95rem;
+  color: rgba(232, 224, 208, 0.9);
+  line-height: 1.45;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* tone colors via data attribute */
+.profileValue[data-tone="green"]  { color: rgba(42,  196, 90,  0.9); }
+.profileValue[data-tone="yellow"] { color: rgba(196, 176, 42,  0.9); }
+.profileValue[data-tone="red"]    { color: rgba(196, 58,  58,  0.9); }
+
+.costNumber {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  color: #C9A84C;
+  font-weight: 700;
+}
+
+.costSub {
+  font-size: 0.82rem;
+  color: rgba(232, 224, 208, 0.55);
+}
+
+/* ── Mirror Moment ────────────────────────────────────── */
+.mirror {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.mirrorTitle {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: rgba(232, 224, 208, 0.85);
+  text-align: center;
+  font-style: italic;
+  margin: 0;
+}
+
+.mirrorGrid {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: var(--space-3);
+  align-items: start;
+}
+
+/* Gold vertical divider */
+.mirrorDivider {
+  width: 1px;
+  background: rgba(201, 168, 76, 0.35);
+  align-self: stretch;
+}
+
+.mirrorCol {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mirrorColLabel {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: rgba(232, 224, 208, 0.38);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 2px;
+}
+
+.mirrorItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+}
+
+.mirrorNum {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: rgba(232, 224, 208, 0.28);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.mirrorText {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(232, 224, 208, 0.75);
+  margin: 0;
+}
+
+/* ── Narration ────────────────────────────────────────── */
+.narration {
+  padding: var(--space-3) var(--space-3);
+  border-left: 3px solid rgba(201, 168, 76, 0.5);
+  background: rgba(201, 168, 76, 0.04);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.narrationText {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: rgba(232, 224, 208, 0.72);
+  margin: 0;
+}
+
+/* ── Action Buttons ───────────────────────────────────── */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+.resetBtn,
+.archiveBtn {
+  width: 100%;
+  padding: 15px var(--space-4);
+  border-radius: var(--radius-xl);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.resetBtn {
+  background: transparent;
+  border: 1px solid rgba(232, 224, 208, 0.2);
+  color: rgba(232, 224, 208, 0.65);
+}
+
+.resetBtn:hover {
+  border-color: rgba(232, 224, 208, 0.4);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.archiveBtn {
+  background: transparent;
+  border: 1px solid rgba(201, 168, 76, 0.55);
+  color: #C9A84C;
+  box-shadow: 0 0 16px rgba(201, 168, 76, 0.12);
+}
+
+.archiveBtn:hover {
+  background: rgba(201, 168, 76, 0.08);
+  box-shadow: 0 0 28px rgba(201, 168, 76, 0.28);
+}
+
+/* ── Mobile: stack mirror columns ─────────────────────── */
+@media (max-width: 480px) {
+  .root {
+    max-width: 100%;
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+
+  .mirrorGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  /* Horizontal gold divider on mobile */
+  .mirrorDivider {
+    width: 100%;
+    height: 1px;
+    background: rgba(201, 168, 76, 0.3);
+    align-self: auto;
+  }
+}
+
+@media (min-width: 480px) {
+  .root {
+    max-width: 480px;
+  }
+}

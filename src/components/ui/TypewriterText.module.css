@@ -1,0 +1,17 @@
+.text {
+  cursor: default;
+  line-height: 1.7;
+}
+
+.cursor {
+  display: inline-block;
+  margin-left: 1px;
+  animation: blink 0.9s step-end infinite;
+  color: var(--color-accent-blue);
+  font-weight: 300;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}

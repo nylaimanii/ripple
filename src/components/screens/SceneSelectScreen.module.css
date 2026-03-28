@@ -1,0 +1,194 @@
+.root {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-3) var(--space-6);
+  gap: var(--space-5);
+  background: var(--color-bg);
+}
+
+/* ── Header ───────────────────────────────────────────── */
+.header { text-align: center; display: flex; flex-direction: column; gap: var(--space-1); }
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent-blue);
+}
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 3.5rem);
+}
+.sub { font-size: 0.82rem; color: rgba(232,224,208,0.45); }
+
+/* ── Cards ────────────────────────────────────────────── */
+.cards {
+  display: flex;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 760px;
+  justify-content: center;
+}
+
+.card {
+  flex: 1;
+  min-width: 0;
+  max-width: 360px;
+  position: relative;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: box-shadow var(--t-normal), border-color var(--t-normal);
+}
+.card:not(.locked) { border-color: color-mix(in srgb, var(--accent), transparent 70%); }
+
+.locked { opacity: 0.5; }
+.done   { border-color: color-mix(in srgb, var(--accent), transparent 50%); }
+
+/* Accent top strip */
+.accentStrip {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+  opacity: 0.7;
+}
+
+/* Lock overlay */
+.lockOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: rgba(10,10,15,0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.lockIcon  { font-size: 2rem; }
+.lockNote  { font-size: 0.8rem; color: rgba(232,224,208,0.5); }
+
+/* Card inner */
+.cardInner {
+  padding: var(--space-4) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  height: 100%;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.cardIcon { font-size: 1.4rem; }
+.cardYear {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.cardLocation {
+  display: block;
+  font-size: 0.75rem;
+  color: rgba(232,224,208,0.45);
+}
+.doneTag {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-green-bright);
+  border: 1px solid rgba(42,196,90,0.3);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+.cardDesc {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(232,224,208,0.65);
+  flex: 1;
+}
+
+.playBtn {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-body);
+  transition: opacity var(--t-fast), box-shadow var(--t-fast);
+  margin-top: var(--space-1);
+}
+.playBtn:hover:not(:disabled) { opacity: 0.9; box-shadow: 0 0 20px color-mix(in srgb, var(--accent), transparent 40%); }
+.playBtnLocked { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Footer ───────────────────────────────────────────── */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.progress {
+  display: flex;
+  gap: var(--space-3);
+}
+.progressItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.progressDot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--color-border);
+  transition: background var(--t-normal);
+}
+.progressDone { background: var(--color-accent-blue); }
+.progressLabel { font-size: 0.78rem; color: rgba(232,224,208,0.5); font-family: var(--font-mono); }
+
+.continueBtn {
+  padding: 12px var(--space-4);
+  background: var(--color-accent-blue);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-body);
+  transition: box-shadow var(--t-fast);
+}
+.continueBtn:hover { box-shadow: 0 0 20px rgba(26,107,138,0.5); }
+
+/* ── Mobile ───────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  .card { max-width: 100%; }
+  .root { padding: var(--space-6) var(--space-2) var(--space-5); }
+}

@@ -1,0 +1,267 @@
+/* ── Root ─────────────────────────────────────────────────── */
+.root {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: #0a0a0f;
+  overflow: hidden;
+  padding: 48px 24px 120px;
+  box-sizing: border-box;
+}
+
+/* ── Particles ────────────────────────────────────────────── */
+.particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent, #1a6b8a);
+  opacity: 0;
+  animation: floatUp var(--dur, 4s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  filter: blur(0.5px);
+}
+
+@keyframes floatUp {
+  0%   { opacity: 0;    transform: translateY(0)     scale(1); }
+  20%  { opacity: 0.3;  }
+  80%  { opacity: 0.12; }
+  100% { opacity: 0;    transform: translateY(-80px) scale(0.6); }
+}
+
+/* ── Content ──────────────────────────────────────────────── */
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* ── Progress ─────────────────────────────────────────────── */
+.progress {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #c9a227;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0;
+  align-self: flex-start;
+}
+
+/* ── Setup text ───────────────────────────────────────────── */
+.setupBlock {
+  width: 100%;
+}
+
+.setupText {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(0.95rem, 2.8vw, 1.12rem);
+  color: #e8e0d0;
+  line-height: 1.75;
+  margin: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ── Cards list ───────────────────────────────────────────── */
+.cardsList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+/* ── Choice card ──────────────────────────────────────────── */
+.card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 20px;
+  background: #1a1a24;
+  border: 1px solid #2a2a3a;
+  border-left: 3px solid #c9a227;
+  border-radius: 12px;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: clamp(0.88rem, 2.5vw, 0.97rem);
+  line-height: 1.6;
+  color: #e8e0d0;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  overflow: visible;
+}
+
+.card:hover {
+  border-color: #c9a227;
+  border-left-color: #c9a227;
+  background: rgba(201, 162, 39, 0.05);
+  box-shadow: 0 0 12px rgba(201, 162, 39, 0.3);
+}
+
+/* ── Option label badge ───────────────────────────────────── */
+.optionLabel {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(201, 162, 39, 0.12);
+  border: 1px solid #c9a227;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #c9a227;
+  margin-top: 1px;
+}
+
+.optionText {
+  flex: 1;
+}
+
+/* ── Tooltip ──────────────────────────────────────────────── */
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: #12121e;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  color: #c8b87a;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-style: italic;
+  line-height: 1.5;
+  padding: 8px 14px;
+  border-radius: 8px;
+  max-width: 300px;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 50;
+  white-space: normal;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Show on JS-controlled hover/long-press */
+.tooltipShow {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Also show on CSS hover (desktop fallback) */
+.card:hover .tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Unheard Room trigger ─────────────────────────────────── */
+.unheardTrigger {
+  position: fixed;
+  bottom: 32px;
+  left: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  background: rgba(10, 10, 15, 0.85);
+  border: 1px solid #2a2a3a;
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  z-index: 20;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.unheardTrigger:hover {
+  border-color: rgba(201, 162, 39, 0.4);
+  box-shadow: 0 0 16px rgba(201, 162, 39, 0.1);
+}
+
+.doorIcon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.unheardLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  color: #9a9090;
+  text-transform: uppercase;
+  white-space: nowrap;
+  position: relative;
+}
+
+.visitedDot {
+  position: absolute;
+  top: -2px;
+  right: -8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #1a8a3a;
+  box-shadow: 0 0 6px rgba(26, 138, 58, 0.6);
+}
+
+/* ── White flash overlay ──────────────────────────────────── */
+.flashOverlay {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  pointer-events: none;
+  z-index: 200;
+}
+
+/* ── Mobile (390px) ───────────────────────────────────────── */
+@media (max-width: 430px) {
+  .root {
+    padding: 36px 18px 110px;
+  }
+
+  .content {
+    gap: 22px;
+  }
+
+  .card {
+    gap: 12px;
+    padding: 15px 16px;
+  }
+
+  /* On mobile, only show tooltip via JS long-press (not CSS hover) */
+  .card:hover .tooltip {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+
+  .card:hover .tooltip.tooltipShow,
+  .tooltipShow {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .unheardTrigger {
+    bottom: 24px;
+    left: 18px;
+    padding: 8px 12px;
+  }
+}

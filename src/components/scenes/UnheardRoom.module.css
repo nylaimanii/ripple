@@ -1,0 +1,193 @@
+/* ── Overlay ──────────────────────────────────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.78);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+/* ── Modal sheet ──────────────────────────────────────────── */
+.modal {
+  width: 100%;
+  max-width: 620px;
+  height: 80vh;
+  height: 80dvh;
+  background: #12121a;
+  border: 1px solid #2a2a3a;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+.header {
+  flex-shrink: 0;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #1e1e2a;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 4vw, 1.4rem);
+  font-weight: 700;
+  color: #c9a227;
+  margin: 0 0 6px;
+  text-shadow: 0 0 20px rgba(201, 162, 39, 0.3);
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.8rem;
+  color: #6a6272;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── Character list ───────────────────────────────────────── */
+.characterList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a3a transparent;
+}
+
+.characterList::-webkit-scrollbar { width: 4px; }
+.characterList::-webkit-scrollbar-track { background: transparent; }
+.characterList::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 2px; }
+
+/* ── Character card ───────────────────────────────────────── */
+.characterCard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #1a1a24;
+}
+
+.characterCard:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* ── Identity row ─────────────────────────────────────────── */
+.identityRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ── Portrait ─────────────────────────────────────────────── */
+.portrait {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  border: 1px solid #2a2a3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.initial {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: rgba(232, 224, 208, 0.45);
+  line-height: 1;
+}
+
+/* ── Identity text ────────────────────────────────────────── */
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.name {
+  font-family: var(--font-body);
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: #e8e0d0;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.meta {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: #6a6272;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* ── Monologue ────────────────────────────────────────────── */
+.monologue {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(0.88rem, 2.5vw, 1rem);
+  color: #c8c0b0;
+  line-height: 1.8;
+  margin: 0;
+  padding-left: 16px;
+  border-left: 2px solid rgba(201, 162, 39, 0.3);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ── Close button ─────────────────────────────────────────── */
+.closeBtn {
+  flex-shrink: 0;
+  margin: 0 24px 24px;
+  padding: 14px 32px;
+  background: transparent;
+  border: 1.5px solid #c9a227;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  color: #c9a227;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.closeBtn:hover {
+  background: rgba(201, 162, 39, 0.08);
+  box-shadow: 0 0 16px rgba(201, 162, 39, 0.25);
+}
+
+/* ── Mobile (390px) ───────────────────────────────────────── */
+@media (max-width: 430px) {
+  .modal {
+    height: 85vh;
+    height: 85dvh;
+  }
+
+  .header {
+    padding: 20px 18px 14px;
+  }
+
+  .characterList {
+    padding: 16px 18px;
+    gap: 24px;
+  }
+
+  .closeBtn {
+    margin: 0 18px 20px;
+    padding: 13px 24px;
+    width: calc(100% - 36px);
+  }
+}
