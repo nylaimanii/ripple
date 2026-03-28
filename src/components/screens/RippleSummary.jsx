@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   RadarChart, Radar, PolarGrid, PolarAngleAxis,
@@ -6,6 +6,7 @@ import {
 } from 'recharts';
 import { useGame } from '../../context/GameContext';
 import GhostIcon from '../ui/GhostIcon';
+import { generateHistoricalVerdict } from '../../services/geminiService';
 import styles from './RippleSummary.module.css';
 
 const WHO_PAYS_BARS = [
@@ -28,10 +29,22 @@ export default function RippleSummary() {
     generatedScenario,
     unheardRoomVisited,
     rippleScore,
+    humanCostTotal,
     setScreen,
   } = useGame();
 
-  const [genIdx, setGenIdx] = useState(0);
+  const [genIdx,         setGenIdx]         = useState(0);
+  const [verdict,        setVerdict]        = useState(null);
+  const [verdictLoading, setVerdictLoading] = useState(true);
+
+  useEffect(() => {
+    setVerdictLoading(true);
+    generateHistoricalVerdict({ generatedScenario, playerChoices, rippleScore, humanCostTotal })
+      .then(result => {
+        setVerdict(result);
+        setVerdictLoading(false);
+      });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 
   const radarData = [
@@ -202,6 +215,48 @@ export default function RippleSummary() {
           )}
         </div>
       </section>
+
+      {/* ── Section 6: Historical Verdict ──────────────────── */}
+      {(verdictLoading || verdict) && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Historical Verdict</h2>
+          {verdictLoading ? (
+            <motion.div
+              style={{
+                background: 'var(--color-card-bg)',
+                border: '1px solid var(--color-border)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+              }}
+              animate={{ opacity: [0.4, 0.8, 0.4] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <div style={{ height: '14px', borderRadius: '6px', background: 'rgba(201,168,76,0.15)', width: '55%' }} />
+              <div style={{ height: '10px', borderRadius: '6px', background: 'rgba(232,224,208,0.07)', width: '100%' }} />
+              <div style={{ height: '10px', borderRadius: '6px', background: 'rgba(232,224,208,0.07)', width: '85%' }} />
+              <div style={{ height: '10px', borderRadius: '6px', background: 'rgba(232,224,208,0.05)', width: '70%', marginTop: '4px' }} />
+            </motion.div>
+          ) : verdict ? (
+            <motion.div
+              className={styles.historyBlock}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <blockquote className={styles.quote}>
+                {verdict.legacyLabel}
+              </blockquote>
+              <p className={styles.historySummary}>{verdict.verdict}</p>
+              <p className={styles.highestCost} style={{ color: 'rgba(232,224,208,0.45)', fontStyle: 'normal' }}>
+                {verdict.comparedToHistory}
+              </p>
+            </motion.div>
+          ) : null}
+        </section>
+      )}
 
       {/* ── CTA ────────────────────────────────────────────── */}
       <div className={styles.cta}>

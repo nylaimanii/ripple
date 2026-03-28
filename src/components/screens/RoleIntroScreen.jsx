@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../../context/GameContext';
 import TypewriterText from '../ui/TypewriterText';
+import { speakText, cancelSpeech } from '../../services/elevenLabsService';
 import styles from './RoleIntroScreen.module.css';
 
 const AMBIANCE_COLORS = {
@@ -23,7 +24,7 @@ const PARTICLES = Array.from({ length: 22 }, (_, i) => ({
 }));
 
 export default function RoleIntroScreen() {
-  const { generatedScenario, setScreen, characterImage } = useGame();
+  const { generatedScenario, setScreen, characterImage, isMuted } = useGame();
 
   const [showButton, setShowButton] = useState(false);
   const typewriterDoneRef = useRef(false);
@@ -36,34 +37,12 @@ export default function RoleIntroScreen() {
 
   const narratorText = scenario.narratorIntro ?? '';
 
-  // ─── Web Speech API voiceover ─────────────────────────────
+  // ─── ElevenLabs voiceover ─────────────────────────────────
   useEffect(() => {
-    if (!narratorText || !window.speechSynthesis) return;
-
-    function speak() {
-      // TODO: Replace with ElevenLabs API call
-      const utterance = new SpeechSynthesisUtterance(narratorText);
-      utterance.rate   = 0.85;
-      utterance.pitch  = 0.9;
-
-      const voices = window.speechSynthesis.getVoices();
-      const maleVoice = voices.find(v =>
-        /daniel|david|james|george|arthur|male|alex|fred/i.test(v.name)
-      );
-      if (maleVoice) utterance.voice = maleVoice;
-
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utterance);
-    }
-
-    if (window.speechSynthesis.getVoices().length > 0) {
-      speak();
-    } else {
-      window.speechSynthesis.addEventListener('voiceschanged', speak, { once: true });
-    }
-
-    return () => { window.speechSynthesis.cancel(); };
-  }, [narratorText]);
+    if (!narratorText) return;
+    speakText(narratorText, { isMuted });
+    return () => cancelSpeech();
+  }, [narratorText, isMuted]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ─── Typewriter done handler ──────────────────────────────
   const handleTypewriterDone = useCallback(() => {

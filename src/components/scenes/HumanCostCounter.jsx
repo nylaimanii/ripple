@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useGame } from '../../context/GameContext';
+import { speakText, cancelSpeech } from '../../services/elevenLabsService';
 import styles from './HumanCostCounter.module.css';
 
 const DURATION_MS   = 3000; // counter animation duration
@@ -18,7 +19,7 @@ function buildCircles() {
 }
 
 export default function HumanCostCounter() {
-  const { generatedScenario, playerChoices, setScreen } = useGame();
+  const { generatedScenario, playerChoices, setScreen, isMuted } = useGame();
 
   // ─── Derive humanCostCount + tradeoffLabel from last choice ─
   const { humanCostCount, tradeoffLabel } = useMemo(() => {
@@ -67,6 +68,16 @@ export default function HumanCostCounter() {
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
   }, [humanCostCount, noVictims]);
+
+  // ─── Narrate count when counter finishes ─────────────────
+  useEffect(() => {
+    if (!counterDone) return;
+    const line = noVictims
+      ? 'The cost of this decision runs deeper than numbers.'
+      : `Your decision affected ${humanCostCount.toLocaleString()} people.`;
+    speakText(line, { isMuted });
+    return () => cancelSpeech();
+  }, [counterDone]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ─── Auto-advance to consequenceMap ──────────────────────
   useEffect(() => {

@@ -3,6 +3,15 @@ import { createClient } from '@supabase/supabase-js';
 const url  = import.meta.env.VITE_SUPABASE_URL;
 const key  = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+// ── PRODUCTION DEPLOYMENT NOTE ─────────────────────────────────
+// Do NOT commit real values to .env — that file is gitignored.
+// When deploying to Vercel, add these as environment variables in
+// the Vercel dashboard: Settings → Environment Variables
+//   VITE_SUPABASE_URL       → your Supabase project URL
+//   VITE_SUPABASE_ANON_KEY  → your Supabase anon/public key
+// Vercel injects them at build time. No code changes needed.
+// ──────────────────────────────────────────────────────────────
+
 // Supabase client — null if env vars are not configured.
 // The RegretArchive component handles the null case gracefully.
 const supabase =

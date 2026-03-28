@@ -7,6 +7,7 @@ import {
   fetchUserRipples, generateGrowthInsights,
   computeJournalStats, rippleImpactBadge,
 } from '../../services/journalService';
+import { generateGeminiInsights } from '../../services/geminiService';
 import styles from './JournalScreen.module.css';
 
 const TOKEN     = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -98,8 +99,10 @@ export default function JournalScreen() {
   const [user,     setUser]     = useState(null);
   const [ripples,  setRipples]  = useState([]);
   const [loading,  setLoading]  = useState(true);
-  const [insights, setInsights] = useState(null);
-  const [insightsLoading, setInsightsLoading] = useState(false);
+  const [insights,              setInsights]              = useState(null);
+  const [insightsLoading,       setInsightsLoading]       = useState(false);
+  const [geminiInsights,        setGeminiInsights]        = useState(null);
+  const [geminiInsightsLoading, setGeminiInsightsLoading] = useState(false);
 
   // ── Auth guard ────────────────────────────────────────────
   useEffect(() => {
@@ -124,12 +127,18 @@ export default function JournalScreen() {
     setRipples(data);
     setLoading(false);
 
-    // Trigger insights after ripples load (needs at least 1)
+    // Trigger both AI insights in parallel (needs at least 1 ripple)
     if (data.length >= 1) {
       setInsightsLoading(true);
-      const result = await generateGrowthInsights(data);
-      setInsights(result);
+      setGeminiInsightsLoading(true);
+      const [groqResult, geminiResult] = await Promise.all([
+        generateGrowthInsights(data),
+        generateGeminiInsights(data),
+      ]);
+      setInsights(groqResult);
       setInsightsLoading(false);
+      setGeminiInsights(geminiResult);
+      setGeminiInsightsLoading(false);
     }
   }
 
@@ -277,28 +286,67 @@ export default function JournalScreen() {
           <motion.section initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
             <p className={styles.sectionLabel}>AI analysis</p>
             <h2 className={styles.sectionTitle}>Personal Growth Insights</h2>
-            <div className={styles.insightsCard}>
-              {insightsLoading ? (
-                <p className={styles.insightsLoading}>Analyzing your decision patterns…</p>
-              ) : insights ? (
-                <>
-                  <div className={styles.insightBlock}>
-                    <p className={styles.insightBlockLabel}>What your choices reveal</p>
-                    <p className={styles.insightBlockText}>{insights.reveals}</p>
-                  </div>
-                  <div className={styles.insightBlock}>
-                    <p className={styles.insightBlockLabel}>Your blind spot</p>
-                    <p className={styles.insightBlockText}>{insights.blindSpot}</p>
-                  </div>
-                  <div className={styles.insightBlock}>
-                    <p className={styles.insightBlockLabel}>A challenge for you</p>
-                    <p className={styles.insightBlockText}>{insights.challenge}</p>
-                  </div>
-                </>
-              ) : (
+
+            {/* Groq Analysis */}
+            {(insightsLoading || insights) && (
+              <div style={{ marginBottom: '16px' }}>
+                <p className={styles.sectionLabel} style={{ marginBottom: '8px' }}>Groq Analysis</p>
+                <div className={styles.insightsCard}>
+                  {insightsLoading ? (
+                    <p className={styles.insightsLoading}>Analyzing your decision patterns…</p>
+                  ) : (
+                    <>
+                      <div className={styles.insightBlock}>
+                        <p className={styles.insightBlockLabel}>What your choices reveal</p>
+                        <p className={styles.insightBlockText}>{insights.reveals}</p>
+                      </div>
+                      <div className={styles.insightBlock}>
+                        <p className={styles.insightBlockLabel}>Your blind spot</p>
+                        <p className={styles.insightBlockText}>{insights.blindSpot}</p>
+                      </div>
+                      <div className={styles.insightBlock}>
+                        <p className={styles.insightBlockLabel}>A challenge for you</p>
+                        <p className={styles.insightBlockText}>{insights.challenge}</p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Gemini Analysis */}
+            {(geminiInsightsLoading || geminiInsights) && (
+              <div>
+                <p className={styles.sectionLabel} style={{ marginBottom: '8px' }}>Gemini Analysis</p>
+                <div className={styles.insightsCard}>
+                  {geminiInsightsLoading ? (
+                    <p className={styles.insightsLoading}>Consulting Gemini…</p>
+                  ) : (
+                    <>
+                      <div className={styles.insightBlock}>
+                        <p className={styles.insightBlockLabel}>What your choices reveal</p>
+                        <p className={styles.insightBlockText}>{geminiInsights.reveals}</p>
+                      </div>
+                      <div className={styles.insightBlock}>
+                        <p className={styles.insightBlockLabel}>Your blind spot</p>
+                        <p className={styles.insightBlockText}>{geminiInsights.blindSpot}</p>
+                      </div>
+                      <div className={styles.insightBlock}>
+                        <p className={styles.insightBlockLabel}>A challenge for you</p>
+                        <p className={styles.insightBlockText}>{geminiInsights.challenge}</p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Fallback if both fail */}
+            {!insightsLoading && !geminiInsightsLoading && !insights && !geminiInsights && (
+              <div className={styles.insightsCard}>
                 <p className={styles.insightsLoading}>Play at least one full scenario to unlock growth insights.</p>
-              )}
-            </div>
+              </div>
+            )}
           </motion.section>
         )}
 

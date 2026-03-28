@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../../context/GameContext';
 import GhostIcon from '../ui/GhostIcon';
+import { speakText, cancelSpeech } from '../../services/elevenLabsService';
 import styles from './RippleScoreUpdate.module.css';
 
 const BARS = [
@@ -15,8 +16,21 @@ export default function RippleScoreUpdate() {
   const {
     generatedScenario, playerChoices,
     rippleScore, currentChoiceIndex, unheardRoomVisited,
-    setChoiceIndex, setScreen, setScenarioComplete,
+    setChoiceIndex, setScreen, setScenarioComplete, isMuted,
   } = useGame();
+
+  // ─── Narrate dominant score on mount ─────────────────────
+  useEffect(() => {
+    const entries = [
+      { key: 'humanCost',                value: rippleScore.humanCost,                line: 'Your choice carries a heavy human cost.' },
+      { key: 'economicImpact',           value: rippleScore.economicImpact,           line: 'The economic consequences of this decision run deep.' },
+      { key: 'environmentalConsequence', value: rippleScore.environmentalConsequence, line: 'The environment bears the weight of your decision.' },
+      { key: 'longTermStability',        value: rippleScore.longTermStability,        line: 'The long-term stability of this region has shifted.' },
+    ];
+    const dominant = entries.reduce((a, b) => b.value > a.value ? b : a);
+    speakText(dominant.line, { isMuted });
+    return () => cancelSpeech();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ─── Derive tradeoffLabel from last choice ────────────────
   const tradeoffLabel = useMemo(() => {

@@ -28,6 +28,9 @@ export default function SignInScreen() {
   async function handleGoogle() {
     if (!supabase) { setError('Supabase is not configured.'); return; }
     setError('');
+    // window.location.origin automatically adapts to any domain —
+    // http://localhost:5173 in dev, https://playripple.com in prod.
+    // No hardcoding needed. Supabase will redirect back here after OAuth.
     const { error: err } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: `${window.location.origin}/journal` },
@@ -41,6 +44,8 @@ export default function SignInScreen() {
     if (!supabase) { setError('Supabase is not configured.'); return; }
     setSending(true);
     setError('');
+    // Same as above — window.location.origin works on localhost and any
+    // production domain without any code changes between environments.
     const { error: err } = await supabase.auth.signInWithOtp({
       email: email.trim(),
       options: { emailRedirectTo: `${window.location.origin}/journal` },
