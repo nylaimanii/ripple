@@ -2,8 +2,6 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { GameProvider, useGame } from './context/GameContext';
 import GlassShatter from './components/ui/GlassShatter';
-import MuteButton from './components/ui/MuteButton';
-
 // Screens
 import IntroScreen       from './components/screens/IntroScreen';
 import LoadingScreen     from './components/screens/LoadingScreen';
@@ -57,9 +55,6 @@ function AppInner() {
 
   return (
     <div style={{ position: 'relative', minHeight: '100dvh' }}>
-      {/* Always-visible mute button — rendered outside screen so it never unmounts */}
-      <MuteButton />
-
       {/* Glass shatter transition overlay */}
       <GlassShatter trigger={shatter} onComplete={handleShatterComplete} />
 

@@ -38,7 +38,6 @@ const A = {
   SET_ERROR:             'SET_ERROR',
   SET_AFFECTED_REGIONS:  'SET_AFFECTED_REGIONS',
   SET_CHARACTER_IMAGE:   'SET_CHARACTER_IMAGE',
-  TOGGLE_MUTE:           'TOGGLE_MUTE',
   RESET:                 'RESET',
 };
 
@@ -97,9 +96,6 @@ function gameReducer(state, action) {
     case A.SET_CHARACTER_IMAGE:
       return { ...state, characterImage: action.payload };
 
-    case A.TOGGLE_MUTE:
-      return { ...state, isMuted: !state.isMuted };
-
     case A.RESET:
       return initialState;
 
@@ -127,7 +123,6 @@ export function GameProvider({ children }) {
   const setError            = useCallback((e)       => dispatch({ type: A.SET_ERROR,            payload: e }),       []);
   const setAffectedRegions  = useCallback((r)       => dispatch({ type: A.SET_AFFECTED_REGIONS,  payload: r }),       []);
   const setCharacterImage   = useCallback((img)     => dispatch({ type: A.SET_CHARACTER_IMAGE,   payload: img }),     []);
-  const toggleMute          = useCallback(()        => dispatch({ type: A.TOGGLE_MUTE }),                            []);
   const resetGame           = useCallback(()        => dispatch({ type: A.RESET }),                                  []);
 
   return (
@@ -136,7 +131,7 @@ export function GameProvider({ children }) {
       setScreen, setHistoricalInput, setScenario,
       setLoading, setChoiceIndex, addPlayerChoice,
       visitUnheardRoom, updateRippleScore, addHumanCost,
-      setScenarioComplete, setError, setAffectedRegions, setCharacterImage, toggleMute, resetGame,
+      setScenarioComplete, setError, setAffectedRegions, setCharacterImage, resetGame,
     }}>
       {children}
     </GameContext.Provider>

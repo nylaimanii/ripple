@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../../context/GameContext';
 import TypewriterText from '../ui/TypewriterText';
-import { speakText, cancelSpeech } from '../../services/elevenLabsService';
 import styles from './RoleIntroScreen.module.css';
 
 const AMBIANCE_COLORS = {
@@ -24,7 +23,7 @@ const PARTICLES = Array.from({ length: 22 }, (_, i) => ({
 }));
 
 export default function RoleIntroScreen() {
-  const { generatedScenario, setScreen, characterImage, isMuted } = useGame();
+  const { generatedScenario, setScreen, characterImage } = useGame();
 
   const [showButton, setShowButton] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -39,21 +38,6 @@ export default function RoleIntroScreen() {
   const accentColor = AMBIANCE_COLORS[ambiance] ?? AMBIANCE_COLORS.solemn;
 
   const narratorText = scenario.narratorIntro ?? '';
-
-  // ─── ElevenLabs voiceover ─────────────────────────────────
-  // 600ms delay clears the browser's autoplay restriction — the user
-  // already clicked "Step Into History" on the previous screen, so
-  // interaction has occurred; the small delay ensures it's registered.
-  useEffect(() => {
-    if (!narratorText || isMuted) return;
-    const timer = setTimeout(() => {
-      speakText(narratorText, { isMuted });
-    }, 600);
-    return () => {
-      clearTimeout(timer);
-      cancelSpeech();
-    };
-  }, [narratorText, isMuted]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ─── Typewriter done handler ──────────────────────────────
   const handleTypewriterDone = useCallback(() => {
@@ -202,29 +186,6 @@ export default function RoleIntroScreen() {
             </motion.button>
           )}
         </AnimatePresence>
-
-        {showButton && (
-          <button
-            onClick={() => speakText(narratorText, { isMuted })}
-            style={{
-              background: 'none',
-              border: '1px solid rgba(232,224,208,0.2)',
-              color: 'rgba(232,224,208,0.45)',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.7rem',
-              letterSpacing: '0.08em',
-              padding: '6px 14px',
-              borderRadius: '999px',
-              cursor: 'pointer',
-              marginTop: '10px',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => e.target.style.color = 'rgba(232,224,208,0.8)'}
-            onMouseLeave={e => e.target.style.color = 'rgba(232,224,208,0.45)'}
-          >
-            🔊 Replay Narration
-          </button>
-        )}
 
         {scenario?.whatActuallyHappened?.summary && (
           <motion.div
