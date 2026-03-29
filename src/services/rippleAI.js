@@ -205,32 +205,58 @@ Field guidance:
 export const fetchHistoricalImage = async (searchTerm) => {
   if (!searchTerm) return null;
 
-  // Try multiple title variants to maximize Wikipedia hit rate
+  const parts = searchTerm.trim().split(/\s+/).filter(Boolean);
+  const firstName = parts[0];
+  const lastName = parts[parts.length - 1];
+
+  // Build variants from most-specific to least — handles middle names like
+  // "Rosa Louise Parks" → tries "Rosa Parks" and "Parks" as fallbacks
   const variants = [
     searchTerm,
-    // First name + last name only (removes titles like "President")
-    searchTerm.replace(/^(President|Secretary|General|Admiral|Prime Minister|Senator|Dr\.|Mr\.|Mrs\.)\s+/i, ''),
-    // Last name only
-    searchTerm.split(' ').slice(-1)[0],
-  ].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i); // dedupe
+    parts.length > 2 ? `${firstName} ${lastName}` : null,
+    searchTerm.replace(
+      /^(President|Secretary|General|Admiral|Prime\s+Minister|Senator|Chancellor|Emperor|Empress|King|Queen|Dr\.|Mr\.|Mrs\.|Ms\.|Prof\.)\s+/i,
+      ''
+    ),
+    lastName,
+    firstName,
+  ]
+    .filter(Boolean)
+    .filter((v, i, a) => a.indexOf(v) === i)
+    .filter(v => v.length > 2);
 
   for (const term of variants) {
     try {
-      const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(term)}&prop=pageimages&format=json&pithumbsize=400&origin=*`;
-      const response = await fetch(url);
-      const data = await response.json();
-      const pages = data?.query?.pages;
-      if (!pages) continue;
-      const page = Object.values(pages)[0];
-      if (page?.thumbnail?.source) {
-        return page.thumbnail.source;
+      // Step 1 — exact Wikipedia title lookup
+      const exactUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(term)}&prop=pageimages&format=json&pithumbsize=400&origin=*`;
+      const exactRes = await fetch(exactUrl);
+      const exactData = await exactRes.json();
+      const exactPages = exactData?.query?.pages;
+      if (exactPages) {
+        const page = Object.values(exactPages)[0];
+        if (page?.thumbnail?.source) return page.thumbnail.source;
+      }
+
+      // Step 2 — full-text search (catches redirects & alternate titles)
+      const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(term)}&srlimit=1&format=json&origin=*`;
+      const searchRes = await fetch(searchUrl);
+      const searchData = await searchRes.json();
+      const topTitle = searchData?.query?.search?.[0]?.title;
+      if (topTitle) {
+        const imgUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(topTitle)}&prop=pageimages&format=json&pithumbsize=400&origin=*`;
+        const imgRes = await fetch(imgUrl);
+        const imgData = await imgRes.json();
+        const imgPages = imgData?.query?.pages;
+        if (imgPages) {
+          const imgPage = Object.values(imgPages)[0];
+          if (imgPage?.thumbnail?.source) return imgPage.thumbnail.source;
+        }
       }
     } catch (e) {
       // try next variant
     }
   }
 
-  // All variants failed — return null, RoleIntroScreen will show initials
   return null;
 };
 
