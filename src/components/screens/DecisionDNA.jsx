@@ -68,8 +68,23 @@ export default function DecisionDNA() {
 
   // ── Mirror: split history summary into ≤3 bullets ─────
   const rawSummary    = generatedScenario?.whatActuallyHappened?.summary ?? '';
-  const historyBullets = (rawSummary.match(/[^.!?]+[.!?]*/g) ?? [rawSummary])
-    .map(s => s.trim()).filter(Boolean).slice(0, 3);
+
+  // Smart sentence splitter — won't break on "Dr.", "Jr.", "U.S.", etc.
+  function splitIntoSentences(text) {
+    if (!text) return [];
+    // Temporarily protect known abbreviations by replacing their periods
+    const protected_ = text
+      .replace(/\b(Dr|Mr|Mrs|Ms|Jr|Sr|Gen|Lt|Sgt|Col|Cpt|St|Prof|Gov|Sen|Rep|U\.S|U\.N|vs|etc|approx|est)\./g,
+        (m) => m.replace('.', '<<DOT>>'));
+    // Split on . ! ? followed by space+capital or end of string
+    const parts = protected_
+      .split(/(?<=[.!?])\s+(?=[A-Z])/)
+      .map(s => s.replace(/<<DOT>>/g, '.').trim())
+      .filter(Boolean);
+    return parts.length >= 2 ? parts.slice(0, 3) : [text.trim()];
+  }
+
+  const historyBullets = splitIntoSentences(rawSummary);
 
   // ── Stagger profiles 600ms apart ──────────────────────
   useEffect(() => {

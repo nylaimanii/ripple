@@ -10,7 +10,7 @@ const SYSTEM_PROMPT = `You are the narrative engine for RIPPLE, a societal impac
 
 CONSEQUENCE ACCURACY RULES: For each choice option, generate consequences that are SPECIFIC TO THAT CHOICE — not generic. If the player picks the historically accurate choice, describe what actually happened with real documented facts and statistics. If the player picks a different choice, describe HYPOTHETICAL consequences based on realistic historical extrapolation — what would have plausibly happened given the geopolitical, social, and economic context of that moment. Always label hypothetical consequences clearly in the tradeoffLabel with an 'In this alternate timeline...' prefix. Be factually accurate about real history. Never invent real statistics. Use phrases like 'historians estimate' or 'according to documented records' for real data.
 
-HISTORICAL ACCURACY: The whatActuallyHappened section must always describe what the REAL historical figure actually did — not what the player chose. This section is always historically accurate regardless of player choices. The whatActuallyHappened.summary must cite real documented outcomes, real names, and real consequences.
+HISTORICAL ACCURACY: The whatActuallyHappened section must always describe what the REAL historical figure actually did — not what the player chose. This section is always historically accurate regardless of player choices. The whatActuallyHappened.summary MUST follow these rules: (1) Write EXACTLY 3 complete, standalone sentences. (2) Each sentence must end with a period, not an abbreviation. (3) Name real documented people using their FULL names — never truncated (write "Dr. Martin Luther King Jr." only in the MIDDLE of a sentence, never before a period). (4) Include at least one real documented number, date, or statistic. (5) NEVER write vague phrases like "widespread change", "social progress", "ongoing inequality", or "significant impact". Every claim must be traceable to documented history.
 
 Return ONLY the JSON object. No text before or after it. No markdown. No explanation. Just the raw JSON.`;
 
@@ -161,12 +161,12 @@ Field guidance:
 - setting.ambiance: one of tense|solemn|urgent|hopeful|desperate
 - narratorIntro: max 60 words, dramatic second-person
 - generationalView.year1/year5/year20/year50: max 30 words each
-- whatActuallyHappened.summary: max 60 words, historically accurate
+- whatActuallyHappened.summary: EXACTLY 3 complete sentences, each ending with proper punctuation. Each sentence must be historically specific: name real people, cite real dates, and state documented outcomes with numbers where known. Sentence 1 = what the historical figure actually did and when. Sentence 2 = the immediate documented consequence with a real statistic or named outcome. Sentence 3 = the long-term legacy or ripple effect with a specific named result. Do NOT use abbreviations like "Dr." at the end of a sentence. Total length: 60-100 words.
 - whatActuallyHappened.highestCostBorne: max 30 words
 - whatActuallyHappened.historicalFigureQuote: string or empty string
 - whoPays values: integers 0-100
 - originCoordinates: exact lat/lng for the location`,
-      1000,
+      1200,
     );
 
     if (!basicInfo) throw new Error("Call 1 (basicInfo) returned null");
