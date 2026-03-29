@@ -103,28 +103,39 @@ REASONING RULES:
   const raw = await callK2(systemPrompt, userContent, 2500);
   if (!raw) return null;
 
-  // Robust JSON extraction
-  try {
-    const clean = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
-    const parsed = JSON.parse(clean);
-    if (parsed?.choices?.length) return parsed;
-  } catch (_) { /* fall through to brace extraction */ }
+  // K2 Think V2 wraps reasoning in <think>...</think> before the JSON.
+  // Strip the entire think block first, then extract JSON.
+  const withoutThink = raw.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
 
-  try {
-    let depth = 0;
-    let start = raw.indexOf('{');
-    if (start === -1) return null;
-    for (let i = start; i < raw.length; i++) {
-      if (raw[i] === '{') depth++;
-      if (raw[i] === '}') depth--;
-      if (depth === 0) {
-        const parsed = JSON.parse(raw.slice(start, i + 1));
-        if (parsed?.choices?.length) return parsed;
-        break;
+  // Work with the cleaned string from here on
+  const sources = [withoutThink, raw]; // try cleaned first, raw as fallback
+
+  for (const src of sources) {
+    // Attempt 1 — strip markdown fences and parse directly
+    try {
+      const clean = src.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+      const parsed = JSON.parse(clean);
+      if (parsed?.choices?.length) return parsed;
+    } catch (_) { /* fall through */ }
+
+    // Attempt 2 — brace-counting extractor
+    try {
+      let depth = 0;
+      let start = src.indexOf('{');
+      if (start !== -1) {
+        for (let i = start; i < src.length; i++) {
+          if (src[i] === '{') depth++;
+          if (src[i] === '}') depth--;
+          if (depth === 0) {
+            const parsed = JSON.parse(src.slice(start, i + 1));
+            if (parsed?.choices?.length) return parsed;
+            break;
+          }
+        }
       }
+    } catch (e) {
+      console.error('k2GenerateChoices parse error:', e);
     }
-  } catch (e) {
-    console.error('k2GenerateChoices parse error:', e);
   }
 
   return null;
