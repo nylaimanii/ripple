@@ -5,7 +5,6 @@ import styles from './HumanCostCounter.module.css';
 
 const DURATION_MS   = 3000; // counter animation duration
 const MAX_CIRCLES   = 200;  // visual cap for performance
-const AUTO_ADVANCE  = 4200; // ms before auto-transition
 
 // Stable random circle positions — generated once per mount
 function buildCircles() {
@@ -68,11 +67,6 @@ export default function HumanCostCounter() {
     return () => cancelAnimationFrame(rafRef.current);
   }, [humanCostCount, noVictims]);
 
-  // ─── Auto-advance to consequenceMap ──────────────────────
-  useEffect(() => {
-    const t = setTimeout(() => setScreen('consequenceMap'), AUTO_ADVANCE);
-    return () => clearTimeout(t);
-  }, [setScreen]);
 
   const formatted = displayed.toLocaleString();
 
@@ -113,6 +107,29 @@ export default function HumanCostCounter() {
           >
             <p className={styles.noVictimsMain}>No direct casualties.</p>
             <p className={styles.noVictimsSub}>The cost is measured differently.</p>
+            <motion.button
+              onClick={() => setScreen('consequenceMap')}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
+              style={{
+                marginTop: '28px',
+                background: 'transparent',
+                border: '1px solid rgba(201,162,39,0.5)',
+                color: '#c9a227',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.8rem',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                padding: '10px 28px',
+                borderRadius: '999px',
+                cursor: 'pointer',
+              }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              See the Ripple →
+            </motion.button>
           </motion.div>
         ) : (
           <>
@@ -143,6 +160,39 @@ export default function HumanCostCounter() {
             >
               {tradeoffLabel}
             </motion.p>
+
+            <motion.button
+              onClick={() => setScreen('consequenceMap')}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: counterDone ? 1 : 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              style={{
+                marginTop: '28px',
+                background: 'transparent',
+                border: '1px solid rgba(201,162,39,0.5)',
+                color: '#c9a227',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.8rem',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                padding: '10px 28px',
+                borderRadius: '999px',
+                cursor: 'pointer',
+                transition: 'border-color 0.2s, color 0.2s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = '#c9a227';
+                e.currentTarget.style.color = '#fff';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = 'rgba(201,162,39,0.5)';
+                e.currentTarget.style.color = '#c9a227';
+              }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              See the Ripple →
+            </motion.button>
           </>
         )}
       </div>
