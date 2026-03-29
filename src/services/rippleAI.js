@@ -243,19 +243,37 @@ export async function generateAffectedRegions(historicalMoment, playerChoices) {
   try {
     const response = await client.chat.completions.create({
       model: "llama-3.3-70b-versatile",
-      max_tokens: 800,
+      max_tokens: 1200,
       messages: [
         { role: "system", content: "Return ONLY raw JSON. No markdown. No explanation." },
         {
           role: "user",
           content: `Historical moment: ${historicalMoment}. Player decisions: ${choicesSummary}.
 
-Return ONLY this JSON with exactly 5 regions spread across the world affected by this historical moment:
-{
-  "regions": [
-    { "regionName": "string", "lat": 0, "lng": 0, "impactType": "positive|negative|unresolved", "impactSummary": "string max 25 words", "timePeriod": "string", "isHistorical": true }
-  ]
-}`,
+Return ONLY this exact JSON structure with exactly 5 regions spread across the world that were genuinely affected by this historical moment and these player decisions.
+
+Rules for impactSummary — THIS IS THE MOST IMPORTANT FIELD:
+- Must be 2-3 full sentences, minimum 40 words, maximum 80 words
+- Must name SPECIFIC real people, institutions, policies, or statistics where possible
+- Must explain the CAUSAL CHAIN — WHY this region was affected and HOW the ripple reached it
+- Must state a concrete outcome: e.g. "an estimated 2 million people lost access to..." or "this triggered a trade embargo that reduced GDP by..."
+- If impactType is "unresolved", explain what specific tension remains unresolved and why it persists today
+- If impactType is "positive", name the specific benefit and who received it
+- If impactType is "negative", name the specific harm, its scale, and who bore the cost
+- NEVER use vague phrases like "ongoing social inequality", "political instability", "economic hardship", or "widespread effects"
+- Write as a documentary narrator — specific, human, consequential
+
+{ "regions": [
+  {
+    "regionName": "string — specific country, city, or region name",
+    "lat": 0,
+    "lng": 0,
+    "impactType": "positive|negative|unresolved",
+    "impactSummary": "2-3 sentences, 40-80 words, specific causal chain with named actors, real statistics, and concrete outcomes — NO vague phrases",
+    "timePeriod": "string e.g. 1955–1968 or 1962–present",
+    "isHistorical": true
+  }
+] }`,
         },
       ],
     });
