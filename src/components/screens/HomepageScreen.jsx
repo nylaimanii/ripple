@@ -25,13 +25,18 @@ const FEATURES = [
     title: 'Decision DNA',
     desc: 'Every choice you make builds your Decision DNA profile. Are you a long-term thinker? Do you protect people or systems first? History reveals who you are.',
   },
+  {
+    icon: '🎭',
+    title: 'Cinematic Experience',
+    desc: 'Glass-shatter transitions, typewriter narration, animated DNA helixes, and a live corkboard of anonymous reflections — history has never felt this visceral.',
+  },
 ];
 
 const POWERED_BY = [
-  { name: 'Groq', desc: 'Lightning-fast AI inference powering real-time scenario generation.' },
+  { name: 'K2 Think V2', desc: 'Primary reasoning engine — models the full historical consequence space across 9 causal trees per scenario.' },
+  { name: 'Groq', desc: 'Lightning-fast AI inference for scenario generation fallback.' },
   { name: 'Mapbox', desc: 'Interactive globe visualization bringing the consequence map to life.' },
-  { name: 'ElevenLabs', desc: 'AI voice narration bringing every historical moment to life.' },
-  { name: 'K2 Think V2', desc: 'Advanced reasoning engine modeling historical consequence chains.' },
+  { name: 'Google Gemini', desc: 'Powers the Historical Verdict and Decision DNA psychological insights.' },
 ];
 
 const STEPS = [
@@ -105,7 +110,8 @@ export default function HomepageScreen() {
             <span className={styles.trustBadge}>✅&nbsp; Any moment in history</span>
             <span className={styles.trustBadge}>✅&nbsp; AI-powered consequences</span>
             <span className={styles.trustBadge}>✅&nbsp; Real historical data</span>
-            <span className={styles.trustBadge}>🌐&nbsp; Custom domain ready</span>
+            <span className={styles.trustBadge}>🎭&nbsp; Cinematic & immersive</span>
+            <span className={styles.trustBadge}>🌐&nbsp; ripple-history.com ready</span>
           </div>
         </motion.div>
 
@@ -208,6 +214,48 @@ export default function HomepageScreen() {
             </div>
           ))}
         </div>
+
+        <div style={{
+          marginTop: '48px',
+          padding: '28px 32px',
+          background: 'rgba(201,162,39,0.05)',
+          border: '1px solid rgba(201,162,39,0.2)',
+          borderRadius: '16px',
+          maxWidth: '640px',
+          margin: '48px auto 0',
+          textAlign: 'center',
+        }}>
+          <p style={{
+            fontFamily: 'var(--font-mono, monospace)',
+            fontSize: '0.65rem',
+            color: 'rgba(232,224,208,0.4)',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            marginBottom: '10px',
+          }}>
+            🌐 GoDaddy Registry
+          </p>
+          <p style={{
+            fontFamily: 'var(--font-display, serif)',
+            fontSize: '1.2rem',
+            color: '#c9a227',
+            fontWeight: 700,
+            margin: '0 0 8px 0',
+          }}>
+            ripple-history.com
+          </p>
+          <p style={{
+            fontFamily: 'var(--font-body, sans-serif)',
+            fontSize: '0.875rem',
+            color: 'rgba(232,224,208,0.6)',
+            lineHeight: 1.6,
+            margin: 0,
+          }}>
+            Every great story deserves a home. Ripple is domain-ready —
+            <strong style={{ color: 'rgba(232,224,208,0.85)' }}> ripple-history.com </strong>
+            registered via GoDaddy Registry, ready to deploy the moment the hackathon ends.
+          </p>
+        </div>
       </section>
 
       {/* ── Bottom CTA ────────────────────────────────────── */}
@@ -235,8 +283,8 @@ export default function HomepageScreen() {
         <p className={styles.footerCopyright}>
           © 2026 RIPPLE. Built for YHack Spring 2026 at Yale University.
         </p>
-        <p className={styles.footerCopyright} style={{ marginTop: '4px', opacity: 0.5 }}>
-          🌐 Custom domain ready · Deployed on Vercel · Built for GoDaddy Registry
+        <p className={styles.footerCopyright} style={{ marginTop: '4px', opacity: 0.6 }}>
+          🌐 Domain: <strong style={{ color: '#c9a227' }}>ripple-history.com</strong> via GoDaddy Registry &nbsp;·&nbsp; Deployed on Vercel
         </p>
       </footer>
 

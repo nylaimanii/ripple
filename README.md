@@ -17,17 +17,22 @@ The entire point: YOUR DECISIONS MATTER. They affect the people around you. They
 
 ## Tech Stack
 - React + Vite
-- Groq AI (llama-3.3-70b-versatile) for scenario generation
-- Mapbox GL JS for the interactive globe
-- Supabase for the Regret Archive and user accounts
-- Framer Motion for animations
-- Web Speech API for voiceover
+- **K2 Think V2** (MBZUAI-IFM/K2-Think-v2) — primary reasoning engine for scenario choice generation
+- Groq AI (llama-3.3-70b-versatile) — fallback scenario engine
+- Google Gemini 1.5 Flash — Historical Verdict + Decision DNA insights
+- Mapbox GL JS — interactive globe consequence map
+- Supabase — Regret Archive (real-time anonymous reflections + play counter)
+- Framer Motion — cinematic screen transitions + animations
+- Web Speech API — narrator voiceover
+- html2canvas — shareable Decision DNA card
 
 ## Tracks
-- Societal Impact (Education)
-- Best Solo Hack
-- Most Creative Hack
-- Best UI/UX
+- 🎭 Entertainment
+- 🌍 Societal Impact (Education)
+- 🧠 Best Use of K2 Think V2
+- 🏆 Best Solo Hack
+- 🎨 Most Creative Hack
+- 🌐 GoDaddy Registry
 
 ## Setup
 1. Clone the repo

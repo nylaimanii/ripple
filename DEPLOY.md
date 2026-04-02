@@ -52,7 +52,6 @@ Go to your Vercel project → **Settings → Environment Variables** and add all
 | `VITE_MAPBOX_TOKEN` | Your Mapbox public token |
 | `VITE_SUPABASE_URL` | Your Supabase project URL |
 | `VITE_SUPABASE_ANON_KEY` | Your Supabase anon/public key |
-| `VITE_ELEVENLABS_API_KEY` | Your ElevenLabs API key (when implemented) |
 | `VITE_GEMINI_API_KEY` | Your Google Gemini API key (aistudio.google.com/app/apikey) |
 | `VITE_K2_API_KEY` | K2 Think V2 API key — get at k2think.ai |
 
