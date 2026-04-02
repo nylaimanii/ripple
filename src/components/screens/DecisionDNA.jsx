@@ -110,18 +110,6 @@ export default function DecisionDNA() {
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // TODO: Replace with ElevenLabs
-  useEffect(() => {
-    if (!window.speechSynthesis) return;
-    const utter   = new SpeechSynthesisUtterance(NARRATION);
-    utter.rate    = 0.8;
-    window.speechSynthesis.cancel();
-    const tid = setTimeout(() => window.speechSynthesis.speak(utter), 500);
-    return () => {
-      clearTimeout(tid);
-      window.speechSynthesis.cancel();
-    };
-  }, []);
 
   function handleShare() {
     html2canvas(dnaRef.current).then(canvas => {
