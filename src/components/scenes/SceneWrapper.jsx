@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../../context/GameContext';
 import { rippleScores } from '../../data/rippleScores';
 import TypewriterText from '../ui/TypewriterText';
-import AudioPlayer from '../ui/AudioPlayer';
 import ChoiceMoment from './ChoiceMoment';
 import UnheardRoom from './UnheardRoom';
 import HumanCostCounter from './HumanCostCounter';
@@ -169,13 +168,6 @@ export default function SceneWrapper({ sceneData, sceneNum }) {
                 tag="p"
               />
 
-              <div className={styles.audioRow}>
-                <AudioPlayer
-                  text={sceneData.narratorIntro}
-                  voiceId="VOICE_ID_NARRATOR"
-                  label="Narrator"
-                />
-              </div>
 
               <motion.button
                 className={styles.continueBtn}
