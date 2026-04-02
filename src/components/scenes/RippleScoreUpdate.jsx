@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../../context/GameContext';
 import GhostIcon from '../ui/GhostIcon';
@@ -12,6 +12,10 @@ const BARS = [
 ];
 
 export default function RippleScoreUpdate() {
+  useEffect(() => {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+  }, []);
+
   const {
     generatedScenario, playerChoices,
     rippleScore, currentChoiceIndex, unheardRoomVisited,
